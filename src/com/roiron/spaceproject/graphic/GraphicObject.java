@@ -3,6 +3,11 @@ package com.roiron.spaceproject.graphic;
 import java.awt.Color;
 import java.awt.Graphics;
 
+
+/**
+ * @author Yohann Roiron
+ *
+ */
 public abstract class GraphicObject {
 	/*
 	 *	Parameters for the object: position, velocity and acceleration
