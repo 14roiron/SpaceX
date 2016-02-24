@@ -70,6 +70,20 @@ public abstract class GraphicObject {
 	public abstract void draw(Graphics g);
 	
 	/**
+	 * Update the position from velocity
+	 * Update velocity from acceleration
+	 */
+	public void update()
+	{
+		setVeloX(getVeloX()+getAccX());
+		setVeloY(getVeloY()+getAccY());
+		setPosX(getPosX()+getVeloX());
+		setPosY(getPosY()+getVeloY());
+		
+		setVtheta(getVtheta()+getAtheta());
+		setTheta(getTheta()+getVtheta());
+	}
+	/**
 	 * @return the posX
 	 */
 	public double getPosX() {
