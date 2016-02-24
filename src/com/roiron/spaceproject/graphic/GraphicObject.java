@@ -62,7 +62,7 @@ public abstract class GraphicObject {
 	 * Print the current figure on the graphic object set.
 	 * @param g the graphic object
 	 */
-	public abstract void dessiner(Graphics g);
+	public abstract void draw(Graphics g);
 	
 	/**
 	 * @return the posX
