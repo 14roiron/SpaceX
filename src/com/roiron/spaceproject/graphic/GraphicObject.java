@@ -16,11 +16,8 @@ public abstract class GraphicObject {
 	private double posY;
 	private double veloX;
 	private double veloY;
-	private double accX;
-	private double accY;
 	private double theta;
 	private double vtheta;
-	private double atheta;
 	public Color color;
 	
 	
@@ -29,24 +26,18 @@ public abstract class GraphicObject {
 	 * @param posY
 	 * @param veloX
 	 * @param veloY
-	 * @param accX
-	 * @param accY
 	 * @param theta
 	 * @param vtheta
-	 * @param atheta
 	 * @param color
 	 */
-	public GraphicObject(double posX, double posY, double veloX, double veloY, double accX, double accY, double theta,
-			double vtheta, double atheta, Color color) {
+	public GraphicObject(double posX, double posY, double veloX, double veloY, double theta,
+			double vtheta, Color color) {
 		this.posX = posX;
 		this.posY = posY;
 		this.veloX = veloX;
 		this.veloY = veloY;
-		this.accX = accX;
-		this.accY = accY;
 		this.theta = theta;
 		this.vtheta = vtheta;
-		this.atheta = atheta;
 		this.color = color;
 	}
 
@@ -75,12 +66,10 @@ public abstract class GraphicObject {
 	 */
 	public void update()
 	{
-		setVeloX(getVeloX()+getAccX());
-		setVeloY(getVeloY()+getAccY());
+
 		setPosX(getPosX()+getVeloX());
 		setPosY(getPosY()+getVeloY());
 		
-		setVtheta(getVtheta()+getAtheta());
 		setTheta(getTheta()+getVtheta());
 	}
 	/**
@@ -131,30 +120,7 @@ public abstract class GraphicObject {
 	public void setVeloY(double veloY) {
 		this.veloY = veloY;
 	}
-	/**
-	 * @return the accX
-	 */
-	public double getAccX() {
-		return accX;
-	}
-	/**
-	 * @param accX the accX to set
-	 */
-	public void setAccX(double accX) {
-		this.accX = accX;
-	}
-	/**
-	 * @return the accY
-	 */
-	public double getAccY() {
-		return accY;
-	}
-	/**
-	 * @param accY the accY to set
-	 */
-	public void setAccY(double accY) {
-		this.accY = accY;
-	}
+	
 	/**
 	 * @return the theta
 	 */
@@ -180,18 +146,6 @@ public abstract class GraphicObject {
 		this.vtheta = vtheta;
 	}
 	/**
-	 * @return the atheta
-	 */
-	public double getAtheta() {
-		return atheta;
-	}
-	/**
-	 * @param atheta the Theta acceleration to set
-	 */
-	public void setAtheta(double atheta) {
-		this.atheta = atheta;
-	}
-	/**
 	 * @return the color
 	 */
 	public Color getColor() {
@@ -202,6 +156,47 @@ public abstract class GraphicObject {
 	 */
 	public void setColor(Color color) {
 		this.color = color;
+	}
+	
+	/**
+	 * Get a vector
+	 * @return the state vector [x,y,theta] 
+	 */
+	public double[] getState()
+	{
+		double[] state= {this.getPosX(),this.getPosY(),this.getTheta()};
+		return state;
+	}
+	/**
+	 * Set the state by vector
+	 * @param state
+	 */
+	
+	public void setState(double[] state)
+	{
+		setPosX(state[0]);
+		setPosY(state[1]);
+		setTheta(state[2]);
+	}
+	/**
+	 * Get Velocity by vector
+	 * @return the velocity vector
+	 */
+	public double[] getVelocity()
+	{
+		double[] state= {this.getVeloX(),this.getVeloY(),this.getVtheta()};
+		return state;
+	}
+	/**
+	 * get the velocity state
+	 * @param state
+	 */
+			
+	public void setVelocity(double[] state)
+	{
+		setVeloX(state[0]);
+		setVeloY(state[1]);
+		setVtheta(state[2]);
 	}
 
 }

@@ -33,8 +33,8 @@ public class Main extends JFrame{
 		spacePanel.addElementListObject(r);
 		spacePanel.repaint();
 		Thread.sleep(1000);
-		c.setAccX(0.01);
-		r.setAtheta(0.01);
+		c.setVeloX(0.1);
+		r.setVtheta(0.1);
 		while(true)
 		{
 			spacePanel.repaint();

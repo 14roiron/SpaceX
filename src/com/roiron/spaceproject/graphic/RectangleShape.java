@@ -31,9 +31,9 @@ public class RectangleShape extends GraphicObject {
 	 * @param width size of the reactangle
 	 * @param height
 	 */
-	public RectangleShape(double posX, double posY, double veloX, double veloY, double accX, double accY, double theta,
-			double vtheta, double atheta, Color color, double width, double height) {
-		super(posX, posY, veloX, veloY, accX, accY, theta, vtheta, atheta, color);
+	public RectangleShape(double posX, double posY, double veloX, double veloY, double theta,
+			double vtheta, Color color, double width, double height) {
+		super(posX, posY, veloX, veloY,  theta, vtheta, color);
 		this.height=height;
 		this.width=width;
 	}

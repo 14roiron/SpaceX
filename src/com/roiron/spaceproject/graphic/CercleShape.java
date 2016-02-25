@@ -27,8 +27,8 @@ public class CercleShape extends GraphicObject {
 	 * @param radius 	
 	 */
 	public CercleShape(double posX, double posY, double veloX, double veloY, double accX, double accY, double theta,
-			double vtheta, double atheta, Color color,double radius) {
-		super(posX, posY, veloX, veloY, accX, accY, theta, vtheta, atheta, color);
+			double vtheta, Color color,double radius) {
+		super(posX, posY, veloX, veloY, theta, vtheta, color);
 		this.radius=radius;
 	}
 
