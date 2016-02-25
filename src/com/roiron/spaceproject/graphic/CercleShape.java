@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
  * @author Yohann Roiron
  *
  */
-public class CercleShape extends GraphicObject {
+public class CercleShape extends GraphicShape {
 	
 	
 	//here we have the center of the circle, and its radius
@@ -25,10 +25,11 @@ public class CercleShape extends GraphicObject {
 	 * @param atheta
 	 * @param color
 	 * @param radius 	
+	 * @param mass mass of the system
 	 */
 	public CercleShape(double posX, double posY, double veloX, double veloY, double accX, double accY, double theta,
-			double vtheta, Color color,double radius) {
-		super(posX, posY, veloX, veloY, theta, vtheta, color);
+			double vtheta, Color color,double radius,double mass) {
+		super(posX, posY, veloX, veloY, theta, vtheta, color,mass);
 		this.radius=radius;
 	}
 
@@ -38,9 +39,10 @@ public class CercleShape extends GraphicObject {
 	 * @param theta
 	 * @param color
 	 * @param radius
+	 * @param mass mass of the system
 	 */
-	public CercleShape(double posX, double posY, double theta, Color color,double radius) {
-		super(posX, posY, theta, color);
+	public CercleShape(double posX, double posY, double theta, Color color,double radius,double mass) {
+		super(posX, posY, theta, color,mass);
 		this.radius=radius;
 	}
 

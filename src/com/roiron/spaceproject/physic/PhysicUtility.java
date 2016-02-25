@@ -1,36 +1,46 @@
 package com.roiron.spaceproject.physic;
 
-import com.roiron.spaceproject.graphic.GraphicObject;
+//This file is use to have some maths functions, to be able to performate operations on vectors of size
+// 2 and 3 (sum2 or sum3)
 
 class PhysicUtility {
-	/**
-	 * Transform the absolute coordinate to a polar one in the reference system
-	 * @param vect state vector we want to convert
-	 * @param ref reference system where we want to be
-	 * @return the polar coordinate in the reference system
-	 */
-		public static double[] toPolar(double[] vect, double[] ref)
-		{
-			double radius=Math.sqrt(Math.pow(vect[0]-ref[0], 2)+Math.pow(vect[1]-ref[1], 2));
-			double theta = Math.atan2(vect[1]-ref[1], vect[0]-ref[0]);
-			return new double[]{radius,theta};
-		}
-		public static double[] toCarthe(double[] vect,double[] ref)
-		{
-			double x=vect[0]*Math.cos(vect[1])+ref[0];
-			double y = vect[0]*Math.sin(vect[1])+ref[1];
-			return new double[]{x,y};
-		}
-		public static double[][] toGlobalPolar(double[][] globalState, double[][] reference)
-		{
-			return new double[][]{toPolar(globalState[0],reference[0]),
-				toPolar(globalState[1],reference[1])};
-		}
-		public static double[][] toGlobalCarther(double[][] globalState,double[][] reference)
-		{
-			return new double[][]{toCarthe(globalState[0],reference[0]),
-				toCarthe(globalState[1],reference[1])};
-		}
+
+	public static double distance(double[] a,double[] b)
+	{
+		return Math.sqrt(Math.pow(a[0]-b[0], 2)+Math.pow(a[1]-b[1], 2));
+	}
+	public static double[] unityVector(double[] a)
+	{
+		double norm=distance(a,new double[]{0,0});
+		double x=a[0]/norm;
+		double y=a[1]/norm;
+		return new double[]{x,y};
+	}
+	public static double[] sum2(double[] a, double[] b)
+	{
+		return new double[]{a[0]+b[0],a[1]+b[1]};
+	}
+	public static double[] sum3(double[] a, double[] b)
+	{
+		return new double[]{a[0]+b[0],a[1]+b[1],a[2]+b[2]};
+	}
+	public static double[] substraction2(double[] a, double[] b)
+	{
+		return new double[]{a[0]-b[0],a[1]-b[1]};
+	}
+	public static double[] scalarProd(double lambda, double[] vect)
+	{
+		return new double[]{lambda*vect[0],lambda*vect[1]};
+	}
+	public static double[] scalarProd3(double lambda, double[] vect)
+	{
+		return new double[]{lambda*vect[0],lambda*vect[1],lambda*vect[2]};
+	}
+	public static double[] copy(double[] a)
+	{
+		return new double[]{a[0],a[1]};
+		
+	}
 
 }
 		

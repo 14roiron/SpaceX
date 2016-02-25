@@ -1,16 +1,18 @@
 package com.roiron.spaceproject;
 
-import java.awt.Color;
+
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-import com.roiron.spaceproject.graphic.CercleShape;
-import com.roiron.spaceproject.graphic.RectangleShape;
 import com.roiron.spaceproject.graphic.SpacePanel;
+import com.roiron.spaceproject.physic.PhysicMotor;
 
 public class Main extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	SpacePanel spacePanel;  //the main frame, where we draw the space
 	
 	
@@ -18,28 +20,28 @@ public class Main extends JFrame{
 	{
 		spacePanel = new SpacePanel();
 		this.setTitle("Space Simulation");
-		this.setSize(spacePanel.width, spacePanel.height);
+		this.setSize(SpacePanel.width, SpacePanel.height);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setContentPane(spacePanel);
 		this.setVisible(true);
+		PhysicMotor motor = new PhysicMotor(spacePanel.getListObject()); 
 		
-		Thread.sleep(1000);	
-		double h= SpacePanel.height;
-		double w= SpacePanel.width;
-		CercleShape c= new CercleShape(w/2,h/2,0, Color.blue, w/8);
-		RectangleShape r = new RectangleShape(w/2-w/6, h/2-h/6, 0, Color.black, w/12, h/12);
-		spacePanel.addElementListObject(c);
-		spacePanel.addElementListObject(r);
-		spacePanel.repaint();
-		Thread.sleep(1000);
-		c.setVeloX(0.1);
-		r.setVtheta(0.1);
+		
+		
 		while(true)
 		{
+			for(int i=0;i<10;i++)
+			{
+				
+				motor.update();
+				Thread.sleep(1);
+			}
+			motor.simulate();
 			spacePanel.repaint();
-			Thread.sleep(10);
-			System.out.println(r.getVtheta());
+			
+			
+			
 		}
 		
 		
