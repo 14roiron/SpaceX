@@ -37,6 +37,7 @@ public class Main extends JFrame{
 				motor.update();
 				Thread.sleep(1);
 			}
+			motor.simulate();
 			spacePanel.repaint();
 			
 			

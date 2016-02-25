@@ -1,25 +1,32 @@
 package com.roiron.spaceproject.graphic;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.roiron.spaceproject.physic.ObjectState;
+
 public class LineCurve extends GraphicObject {
 
-	double[][] pointsList;
+	ObjectState[] pointsList;
 	public LineCurve()
 	{
-		pointsList=new double[4][2];
+		pointsList=new ObjectState[0];
 	}
 	public void draw(Graphics g) {
 
-		double[] current,previous;
+		ObjectState current,previous;
+		g.setColor(Color.white);
 		for(int i=1;i<pointsList.length;i++)
 		{
 			current=pointsList[i];
 			previous=pointsList[i-1];
-			g.drawLine((int)previous[0], (int)previous[1], (int)current[0], (int)current[1]);
+			g.drawLine((int)previous.getPositionXY()[0], 
+					(int)previous.getPositionXY()[1], 
+					(int)current.getPositionXY()[0], 
+					(int)current.getPositionXY()[1]);
 			
 		}
 		
@@ -34,14 +41,15 @@ public class LineCurve extends GraphicObject {
 	/**
 	 * @return the pointsList
 	 */
-	public double[][] getPointsList() {
+	public ObjectState[] getPointsList() {
 		return pointsList;
 	}
 	/**
 	 * @param pointsList the pointsList to set
 	 */
-	public void setPointsList(double[][] pointsList) {
+	public void setPointsList(ObjectState[] pointsList) {
 		this.pointsList = pointsList;
 	}
+	
 	
 }

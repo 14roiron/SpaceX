@@ -13,52 +13,55 @@ public class SpacePanel extends JPanel {
 	/**
 	 * Screen Size and Object List
 	 */
-	public static final int height=600;
-	public static final int width=800;
-	
+	public static final int height = 600;
+	public static final int width = 800;
+
 	private List<GraphicObject> listObject;
-	
-	
-	
-	
+
 	public SpacePanel() {
-		listObject=new ArrayList<GraphicObject>();
+		listObject = new ArrayList<GraphicObject>();
 	}
 
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		
 		draw(g);
 
 	}
+
 	private void draw(Graphics g) {
-		for(GraphicObject object : listObject)
-		{
-			object.draw(g);
+		synchronized (listObject) {
+			for (GraphicObject object : listObject) {
+				object.draw(g);
+			}
 		}
-		
+
 	}
 
 	/**
 	 * Add an element to the graphic list
-	 * @param o object to add
+	 * 
+	 * @param o
+	 *            object to add
 	 */
-	public void addElementListObject(GraphicObject o)
-	{
+	public void addElementListObject(GraphicObject o) {
 		this.listObject.add(o);
 	}
+
 	/**
 	 * Get an element from the graphic list
-	 * @param id of the element you want
+	 * 
+	 * @param id
+	 *            of the element you want
 	 * @return GraphicObject of the id given
 	 */
-	public GraphicObject getElementListObjectById(int id)
-	{
+	public GraphicObject getElementListObjectById(int id) {
 		return this.listObject.get(id);
 	}
+
 	/**
 	 * Getter for the entire list
+	 * 
 	 * @return the listObject
 	 */
 	public List<GraphicObject> getListObject() {

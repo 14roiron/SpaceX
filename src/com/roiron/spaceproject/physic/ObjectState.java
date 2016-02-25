@@ -9,6 +9,9 @@ public class ObjectState {
 	 */
 	public ObjectState()
 	{
+		this.position=new double[3];
+		this.velocity=new double[3];
+		this.mass=0;
 		
 	}
 	/**

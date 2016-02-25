@@ -31,6 +31,10 @@ class PhysicUtility {
 	{
 		return new double[]{lambda*vect[0],lambda*vect[1]};
 	}
+	public static double[] scalarProd3(double lambda, double[] vect)
+	{
+		return new double[]{lambda*vect[0],lambda*vect[1],lambda*vect[2]};
+	}
 	public static double[] copy(double[] a)
 	{
 		return new double[]{a[0],a[1]};
