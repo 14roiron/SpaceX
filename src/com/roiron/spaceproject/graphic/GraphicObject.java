@@ -184,7 +184,7 @@ public abstract class GraphicObject {
 	 */
 	public double[] getVelocity()
 	{
-		double[] state= {this.getVeloX(),this.getVeloY(),this.getVtheta()};
+		double[] state= {this.getVeloX(),this.getVeloY()};
 		return state;
 	}
 	/**
@@ -196,7 +196,11 @@ public abstract class GraphicObject {
 	{
 		setVeloX(state[0]);
 		setVeloY(state[1]);
-		setVtheta(state[2]);
+	}
+	
+	public double[][] getGlobalState()
+	{
+		return new double[][]{getState(),getVelocity()};
 	}
 
 }
