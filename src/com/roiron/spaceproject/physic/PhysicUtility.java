@@ -17,8 +17,8 @@ class PhysicUtility {
 		}
 		public static double[] toCarthe(double[] vect,double[] ref)
 		{
-			double x=vect[0]*Math.cos(vect[1]+ref[1])+ref[0];
-			double y = vect[0]*Math.sin(vect[1]+ref[1])+ref[0];
+			double x=vect[0]*Math.cos(vect[1])+ref[0];
+			double y = vect[0]*Math.sin(vect[1])+ref[1];
 			return new double[]{x,y};
 		}
 		public static double[][] toGlobalPolar(double[][] globalState, double[][] reference)

@@ -26,8 +26,10 @@ public class physiqueMotor {
 	
 	
 	public void simulate(){
+		double[][] moonGlobalState = PhysicUtility.toGlobalPolar(moon.getGlobalState(),earth.getGlobalState());
 		
+		double moonearthForce=-10./Math.pow(moonGlobalState[0][0],2);
+		double[] moonVelocity = PhysicUtility.toCarthe(new double[]{moonearthForce, moonGlobalState[0][1]}, earth.getState());
 	}
-	
 
 }
