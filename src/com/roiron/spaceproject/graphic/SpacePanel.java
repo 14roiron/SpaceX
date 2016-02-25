@@ -26,7 +26,7 @@ public class SpacePanel extends JPanel {
 	}
 
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.white);
+		g.setColor(Color.black);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
 		draw(g);
@@ -35,7 +35,6 @@ public class SpacePanel extends JPanel {
 	private void draw(Graphics g) {
 		for(GraphicObject object : listObject)
 		{
-			object.update();
 			object.draw(g);
 		}
 		

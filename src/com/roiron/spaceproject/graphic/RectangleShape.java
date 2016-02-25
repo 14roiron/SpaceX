@@ -11,7 +11,7 @@ import java.awt.Graphics2D;
  * @author Yohann Roiron
  *
  */
-public class RectangleShape extends GraphicObject {
+public class RectangleShape extends GraphicShape {
 
 	//Size of the rectangle, here posX, posY corresponds to the center.
 	private double height;
@@ -28,12 +28,13 @@ public class RectangleShape extends GraphicObject {
 	 * @param vtheta angle velocity
 	 * @param atheta angle acceleration
 	 * @param color color of the rectangle
-	 * @param width size of the reactangle
+	 * @param width size of the rectangle
 	 * @param height
+	 * @param mass mass of the system
 	 */
 	public RectangleShape(double posX, double posY, double veloX, double veloY, double theta,
-			double vtheta, Color color, double width, double height) {
-		super(posX, posY, veloX, veloY,  theta, vtheta, color);
+			double vtheta, Color color, double width, double height,double mass) {
+		super(posX, posY, veloX, veloY,  theta, vtheta, color,mass);
 		this.height=height;
 		this.width=width;
 	}
@@ -43,9 +44,10 @@ public class RectangleShape extends GraphicObject {
 	 * @param posY
 	 * @param theta
 	 * @param color
+	 * @param mass mass of the system
 	 */
-	public RectangleShape(double posX, double posY, double theta, Color color, double width, double height) {
-		super(posX, posY, theta, color);
+	public RectangleShape(double posX, double posY, double theta, Color color, double width, double height,double mass) {
+		super(posX, posY, theta, color,mass);
 		this.height=height;
 		this.width=width;
 	}
