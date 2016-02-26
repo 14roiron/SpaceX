@@ -13,7 +13,7 @@ import java.awt.Graphics2D;
  */
 public class RectangleShape extends GraphicShape {
 
-	//Size of the rectangle, here posX, posY corresponds to the center.
+	//Size of the rectangle, here posX, posY corresponds to the center of the rectangle
 	private double height;
 	private double width;
 	

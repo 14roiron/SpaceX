@@ -17,20 +17,20 @@ public class PhysicMotor {
 	// private RectangleShape rocket;
 	private List<GraphicObject> listGraphic;
 	private Commandes commandes;
-
+	public static final int height = 800;
+	public static final int width = 900;
 	public PhysicMotor(List<GraphicObject> listGraphic, Commandes commandes) {
 		synchronized(listGraphic)
 		{
 			this.listGraphic = listGraphic;
 			// We fisrt define the earth, Velocity equal to 0
-			listGraphic.add(new CercleShape(0, 0, 0, Color.BLUE, 20, 10));
-			earth = new CercleShape(SpacePanel.width / 2, SpacePanel.height / 2, 0, Color.blue, SpacePanel.height / 10,
+			earth = new CercleShape(width / 2, height / 2, 0, Color.blue, height / 10,
 					1000);
 			listGraphic.add(earth);
 	
-			moon = new CercleShape(SpacePanel.width * 5 / 6, SpacePanel.height / 2, 0, Color.white, SpacePanel.height / 30,
+			moon = new CercleShape(width * 5 / 6, height / 2, 0, Color.white, height / 30,
 					10);
-			moon.setVeloY(6.3);
+			moon.setVeloY(5.9);
 			listGraphic.add(moon);
 	
 			moonCurve = new LineCurve();

@@ -78,7 +78,6 @@ public class Main extends JFrame{
 		
 		controlPannel = new JPanel();
 		controlPannel.setLayout(new GridLayout(3,2));
-		//controlPannel.setSize(new Dimension(SpacePanel.width, 20));
 		
 		controlPannel.add(new JLabel("Thrust power"));
 		thrustProgressBar = new JProgressBar(0, 100);
@@ -96,17 +95,19 @@ public class Main extends JFrame{
 		gasProgressBar = new JProgressBar(0, 100);
 		gasProgressBar.setValue(0);
 		gasProgressBar.setStringPainted(true);
-		//gasProgressBar.setPreferredSize(new Dimension(100, 60));
 		controlPannel.add(gasProgressBar);
 		mainPanel=new JPanel();
-		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
-	    mainPanel.add(spacePanel);
+		mainPanel.setLayout(null);
+		controlPannel.setBounds(1100-200, 0, 200, 200);
 	    mainPanel.add(controlPannel);
+		spacePanel.setBounds(0, 0,1100, 800);
+	    mainPanel.add(spacePanel);
+	    
 
 		
 		
 		this.setTitle("Space Simulation");
-		this.setSize(SpacePanel.width, SpacePanel.height+600);
+		this.setSize(1100, 800);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setContentPane(mainPanel);

@@ -13,8 +13,8 @@ public class SpacePanel extends JPanel {
 	/**
 	 * Screen Size and Object List
 	 */
-	public static final int height = 600;
-	public static final int width = 800;
+	//public static final int getHeight = 600;
+	//public static final int getWidth() = 800;
 
 	private List<GraphicObject> listObject;
 
