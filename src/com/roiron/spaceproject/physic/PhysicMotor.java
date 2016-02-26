@@ -3,6 +3,7 @@ package com.roiron.spaceproject.physic;
 import java.awt.Color;
 import java.util.List;
 
+import com.roiron.spaceproject.Commandes;
 import com.roiron.spaceproject.graphic.CercleShape;
 import com.roiron.spaceproject.graphic.GraphicObject;
 import com.roiron.spaceproject.graphic.LineCurve;
@@ -15,12 +16,14 @@ public class PhysicMotor {
 	private LineCurve moonCurve;
 	// private RectangleShape rocket;
 	private List<GraphicObject> listGraphic;
+	private Commandes commandes;
 
-	public PhysicMotor(List<GraphicObject> listGraphic) {
+	public PhysicMotor(List<GraphicObject> listGraphic, Commandes commandes) {
 		synchronized(listGraphic)
 		{
 			this.listGraphic = listGraphic;
 			// We fisrt define the earth, Velocity equal to 0
+			listGraphic.add(new CercleShape(0, 0, 0, Color.BLUE, 20, 10));
 			earth = new CercleShape(SpacePanel.width / 2, SpacePanel.height / 2, 0, Color.blue, SpacePanel.height / 10,
 					1000);
 			listGraphic.add(earth);
