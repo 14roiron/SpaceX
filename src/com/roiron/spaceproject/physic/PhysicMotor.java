@@ -4,15 +4,15 @@ import java.awt.Color;
 import java.util.List;
 
 import com.roiron.spaceproject.Commandes;
-import com.roiron.spaceproject.graphic.CercleShape;
+import com.roiron.spaceproject.graphic.CircleShape;
 import com.roiron.spaceproject.graphic.GraphicObject;
 import com.roiron.spaceproject.graphic.LineCurve;
 import com.roiron.spaceproject.graphic.SpacePanel;
 
 public class PhysicMotor {
 
-	private CercleShape earth;
-	private CercleShape moon;
+	private CircleShape earth;
+	private CircleShape moon;
 	private LineCurve moonCurve;
 	// private RectangleShape rocket;
 	private List<GraphicObject> listGraphic;
@@ -24,11 +24,11 @@ public class PhysicMotor {
 		{
 			this.listGraphic = listGraphic;
 			// We fisrt define the earth, Velocity equal to 0
-			earth = new CercleShape(width / 2, height / 2, 0, Color.blue, height / 10,
+			earth = new CircleShape(width / 2, height / 2, 0, Color.blue, height / 10,
 					1000);
 			listGraphic.add(earth);
 	
-			moon = new CercleShape(width * 5 / 6, height / 2, 0, Color.white, height / 30,
+			moon = new CircleShape(width * 5 / 6, height / 2, 0, Color.white, height / 30,
 					10);
 			moon.setVeloY(5.9);
 			listGraphic.add(moon);
