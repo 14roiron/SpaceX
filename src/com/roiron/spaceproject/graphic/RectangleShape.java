@@ -9,13 +9,14 @@ import java.awt.Graphics2D;
 
 /**
  * @author Yohann Roiron
- *
+ * Enable to draw a rectangle
  */
 public class RectangleShape extends GraphicShape {
 
 	//Size of the rectangle, here posX, posY corresponds to the center of the rectangle
 	private double height;
 	private double width;
+	private boolean inContact = true; 
 	
 	/** Complete Template with parameters
 	 * @param posX position of the center of the rectangle
@@ -40,7 +41,7 @@ public class RectangleShape extends GraphicShape {
 	}
 
 	/**
-	 * first constructor with usefull parameters
+	 * first constructor with useful parameters
 	 * @param posX center  
 	 * @param posY center 
 	 * @param theta
@@ -72,6 +73,7 @@ public class RectangleShape extends GraphicShape {
 	
 	
 	/**
+	 * Set the height of the rectangle
 	 * @return the height
 	 */
 	public double getHeight() {
@@ -79,10 +81,27 @@ public class RectangleShape extends GraphicShape {
 	}
 
 	/**
+	 * set the width of the rectangle
 	 * @return the width
 	 */
 	public double getWidth() {
 		return width;
+	}
+
+	/**
+	 * Is the rectangle in contact with something?
+	 * @return the inContact
+	 */
+	public boolean isInContact() {
+		return inContact;
+	}
+
+	/**
+	 * Set the rectangle in contact with something
+	 * @param inContact the inContact to set
+	 */
+	public void setInContact(boolean inContact) {
+		this.inContact = inContact;
 	}
 
 
