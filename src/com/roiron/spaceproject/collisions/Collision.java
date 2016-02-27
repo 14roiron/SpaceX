@@ -77,35 +77,5 @@ public class Collision{
 		return inContact;
 	}
 	
-	
-//	 public static void main(String[] args) throws InterruptedException {
-//	 
-//		CircleShape circleShape = new CircleShape(500, 500, 0, Color.green, 300, 0);
-//		RectangleShape rectangleShape = new RectangleShape(300, 200, 0*Math.PI/2, Color.red, 200, 100, 0);
-//	
-//		
-//		SpacePanel spacePanel = new SpacePanel();
-//		spacePanel.addElementListObject(circleShape);
-//		spacePanel.addElementListObject(rectangleShape);
-//		System.out.println(simpleCollision(rectangleShape, circleShape,spacePanel.getListObject()));
-//		JFrame jFrame= new JFrame();
-//		jFrame.setTitle("Space Simulation");
-//		jFrame.setSize(1100, 800);
-//		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		jFrame.setLocationRelativeTo(null);
-//		jFrame.setContentPane(spacePanel);
-//		jFrame.setVisible(true);
-//		for(int i=0; i<100;i++)
-//		{
-//			List<GraphicObject> list=spacePanel.getListObject();
-//			list.clear();
-//			list.add(circleShape);
-//			list.add(rectangleShape);
-//			rectangleShape.setTheta(rectangleShape.getTheta()+1./10.);
-//			System.out.println(simpleCollision(rectangleShape, circleShape, list));
-//			spacePanel.repaint();
-//			Thread.sleep(1000);
-//		}
-//	}
 
 }

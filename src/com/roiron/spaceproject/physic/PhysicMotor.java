@@ -7,6 +7,7 @@ import com.roiron.spaceproject.Commandes;
 import com.roiron.spaceproject.graphic.CircleShape;
 import com.roiron.spaceproject.graphic.GraphicObject;
 import com.roiron.spaceproject.graphic.LineCurve;
+import com.roiron.spaceproject.graphic.RectangleShape;
 import com.roiron.spaceproject.graphic.SpacePanel;
 
 public class PhysicMotor {
@@ -14,7 +15,7 @@ public class PhysicMotor {
 	private CircleShape earth;
 	private CircleShape moon;
 	private LineCurve moonCurve;
-	// private RectangleShape rocket;
+	private RectangleShape rocket;
 	private List<GraphicObject> listGraphic;
 	private Commandes commandes;
 	public static final int height = 800;
@@ -35,6 +36,9 @@ public class PhysicMotor {
 	
 			moonCurve = new LineCurve();
 			listGraphic.add(moonCurve);
+			
+			rocket = new RectangleShape(width/2, height/2-height/10-30, 0, Color.gray, 40, 60, 0.01);
+			listGraphic.add(rocket);
 		}
 
 	}
