@@ -3,6 +3,8 @@ package com.roiron.spaceproject.physic;
 import java.awt.Color;
 import java.util.List;
 
+import javax.print.attribute.standard.PrinterLocation;
+
 import com.roiron.spaceproject.Commandes;
 import com.roiron.spaceproject.collisions.Collision;
 import com.roiron.spaceproject.graphic.CircleShape;
@@ -41,7 +43,7 @@ public class PhysicMotor {
 			moonCurve = new LineCurve();
 			listGraphic.add(moonCurve);
 			
-			rocket = new RectangleShape(width/2, height/2-height/10-30, 0, Color.gray, 40, 60, 100);
+			rocket = new RectangleShape(width/2, height/2-height/10-30, 0, Color.gray, 40, 60, 10);
 			listGraphic.add(rocket);
 			
 			rocketCurve = new LineCurve();
@@ -53,6 +55,7 @@ public class PhysicMotor {
 	public void update() {
 		synchronized (listGraphic) {
 			moon.setVelocity(updateMoon(earth.getState(), moon.getState(), moon.getVelocity()));
+			commandes.update();
 			if(!(rocket.getInContact()==null) && (Collision.simpleCollision(rocket, earth) 
 					|| Collision.simpleCollision(rocket, moon)))//we just arrive in contact with earth or moon.
 			{
@@ -71,10 +74,10 @@ public class PhysicMotor {
 						rocket.getMass()*rocket.getInContact().getMass()));
 				
 				//we have enough thrust to leave the planet.
-				if(commandes.getThrust()>gravityForceNorm)
+				if(commandes.getThrustTotal()>gravityForceNorm)
 				{
 					rocket.setState(updateRocketVelocity(earth.getState(), moon.getState(), rocket.getState(),
-							rocket.getVelocity(), rocket.getMass(), false));
+							rocket.getVelocity(), rocket.getMass(), commandes.getThrustTotal(),false));
 				}
 				
 				//we just left a planet
@@ -122,16 +125,16 @@ public class PhysicMotor {
 			rocketList[i] = new ObjectState();
 			curentState = rocketList[i];
 			//should be change to take in account the mass changing of the rocket.
-			curentState.setMass(rocket.getMass());
+			curentState.setMass(rocket.getMass()+commandes.simulateMass(i));
 			curentState.setVelocityXY(
 					updateRocketVelocity(earth.getState(), moonList[i].getPositionXY(), previousState.getPositionXY(),
-							previousState.getVelocityXY(), rocket.getMass(),false));
+							previousState.getVelocityXY(), curentState.getMass(),commandes.simulateThrust(i),false));
 			double[] update = PhysicUtility.scalarProd3(1./10., curentState.getVelocity());
 			double[] sum = PhysicUtility.sum3(update, previousState.getPosition());
 			curentState.setPosition(sum);
 		}
 		updateRocketVelocity(earth.getState(), moonList[0].getPositionXY(), rocketList[0].getPositionXY(),
-				rocketList[0].getVelocityXY(), rocket.getMass(),true);
+				rocketList[0].getVelocityXY(), rocketList[1].getMass(),commandes.simulateThrust(0),true);
 		synchronized (listGraphic) {
 			moonCurve.setPointsList(moonList);
 			rocketCurve.setPointsList(rocketList);
@@ -141,7 +144,7 @@ public class PhysicMotor {
 	}
 	/**
 	 * Get the Gravity force vectors between two bodies
-	 * @param pos1 pos of the body we want to evalove
+	 * @param pos1 pos of the body we want to evolve
 	 * @param pos2 post of the reference body
 	 * @param factor mass constant (-G Ma Mb)
 	 * @return
@@ -159,16 +162,18 @@ public class PhysicMotor {
 		return moonSpeed;
 	}
 	public double[] updateRocketVelocity(double[] earthState, double[] moonState, 
-			double[] rocketState, double[] rocketVelocity, double rocketMass,boolean print)
+			double[] rocketState, double[] rocketVelocity, double rocketMass,double thrust,boolean print)
 	{
 		double[] earthForce = getForceVector(rocketState, earthState, earth.getMass() * rocketMass);
 		double[] moonForce = getForceVector(rocketState, moonState, moon.getMass() * rocketMass);
-		double[] thrustForce = PhysicUtility.scalarProd(commandes.getThrust(), 
+		double[] thrustForce = PhysicUtility.scalarProd(thrust, 
 				PhysicUtility.unityVector(commandes.getAngleThrust()));
 		if(print){
-		System.out.println("earthForce:"+PhysicUtility.norm2(earthForce));
-		System.out.println("moonForce:"+PhysicUtility.norm2(moonForce));
-		System.out.println("thrust:"+PhysicUtility.norm2(thrustForce));}
+			System.out.println("mass:"+rocketMass);
+			System.out.println("earthForce:"+PhysicUtility.norm2(earthForce));
+			System.out.println("moonForce:"+PhysicUtility.norm2(moonForce));
+			System.out.println("thrust:"+PhysicUtility.norm2(thrustForce));
+		}
 		double[] sum = PhysicUtility.sum2(earthForce, moonForce);
 		sum=PhysicUtility.sum2(sum, thrustForce);
 		double[] update = PhysicUtility.scalarProd(1 / rocketMass, sum);

@@ -1,29 +1,81 @@
 package com.roiron.spaceproject;
 
 public class Commandes {
+	public final static double MaxPropeller = 3;
 	private double thrust;
 	private double angleThrust;
 	private double gasTank;
-	public final static double GasTankCapacity=100;
+	public final static double GasTankCapacity=5;
+	private boolean isBoosterOn;
+	private double boosterTank;
+	public final static double BoosterTankCapacity=20;
 	public Commandes()
 	{
 		gasTank=GasTankCapacity;
+		boosterTank=BoosterTankCapacity;
 		angleThrust=-Math.PI/2.;
+		isBoosterOn=false;
 	}
-	/**
+	/**Return the Thrust, depending if we have enough gas and
+	 *  if the booster is started and not yet empty
 	 * @return the thrust
 	 */
-	public double getThrust() {
-		return thrust;
+	public double getThrustTotal() {
+		double thrustTotal=0;
+		if(gasTank>0)
+			thrustTotal+=thrust;
+		if(isBoosterOn && boosterTank>0)
+			thrustTotal+=boosterTank*1.265;
+		return thrustTotal;
 	}
 	/**
-	 * @param thrust the thrust to set
+	 * get the trustTotal in i periods
+	 * @param i: number of period
+	 * @return estimation of the thrust in i periods
 	 */
-	public void setThrust(double thrust) {
-		this.thrust = thrust;
+	public double simulateThrust(int i){
+		double thrustTotal=0;
+		if(gasTank>i*getThrust()/10.)
+			thrustTotal+=thrust;
+		if(isBoosterOn && boosterTank>i*0.1)
+			thrustTotal+=boosterTank*1.265;
+		return thrustTotal;
 	}
-
+	/**
+	 * Return the mass of the propeller part
+	 * @return masse of the propeller
+	 */
+	public double getMass(){
+		return boosterTank+gasTank;
+	}
+	public double simulateMass(int i)
+	{
+		double boosterTankCopy=boosterTank;
+		double gasTankCopy=gasTank;
+		for(int j=0;j<i;j++)
+		{
+			if(isBoosterOn & boosterTankCopy>0)
+				boosterTankCopy-=0.0010;
+			if(getThrust()>0)
+				gasTankCopy-=thrust/500.;
+		}
+		return gasTankCopy+boosterTankCopy;
+	}
+	/**
+	 * Update the state of the commands, decrease the fuel 
+	 * capacity and turn off the booster if it's empty
+	 */
+	public void update()
+	{
+		if(isBoosterOn)
+			boosterTank-=0.0010;
+		if(boosterTank<=0)
+			setBoosterOn(false);
+		if(getThrust()>0)
+			gasTank-=thrust/500.;
+	}
 	public void increaseThrust() {
+		isBoosterOn=true;
 		this.thrust+=0.1;
 	}
 	public void decreaseThrust() {
@@ -65,6 +117,42 @@ public class Commandes {
 	}
 	public double getGasTankPerecentage(){
 		return getGasTank()/GasTankCapacity*100.;
+	}
+	/**
+	 * @return the isBoosterOn
+	 */
+	public boolean isBoosterOn() {
+		return isBoosterOn;
+	}
+	/**
+	 * @param isBoosterOn the isBoosterOn to set
+	 */
+	public void setBoosterOn(boolean isBoosterOn) {
+		this.isBoosterOn = isBoosterOn;
+	}
+	/**
+	 * @return the boosterTank
+	 */
+	public double getBoosterTank() {
+		return boosterTank;
+	}
+	/**
+	 * @param boosterTank the boosterTank to set
+	 */
+	public void setBoosterTank(double boosterTank) {
+		this.boosterTank = boosterTank;
+	}
+	/**
+	 * @return the thrust
+	 */
+	public double getThrust() {
+		return thrust;
+	}
+	/**
+	 * @param thrust the thrust to set
+	 */
+	public void setThrust(double thrust) {
+		this.thrust = thrust;
 	}
 	
 	
