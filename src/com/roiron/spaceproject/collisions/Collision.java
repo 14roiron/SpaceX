@@ -62,13 +62,12 @@ public class Collision{
 	 * @return boolean, are they in contact?
 	 */
 	
-	public static boolean simpleCollision(RectangleShape rect, CircleShape circle,List<GraphicObject> l)
+	public static boolean simpleCollision(RectangleShape rect, CircleShape circle)
 	{
 		double[][] vertices = getVerticesFrongTriangle(rect);
 		boolean inContact=false;
 		for(int i=0;i<vertices.length;i++)
 		{
-			l.add(new CircleShape(vertices[i][0], vertices[i][1], 0, Color.gray, 20, 0));
 			if(  PhysicUtility.distance(vertices[i], circle.getState())   <=  circle.getRadius())
 			{
 				inContact=true;

@@ -16,7 +16,7 @@ public class RectangleShape extends GraphicShape {
 	//Size of the rectangle, here posX, posY corresponds to the center of the rectangle
 	private double height;
 	private double width;
-	private boolean inContact = true; 
+	private CircleShape inContact; 
 	
 	/** Complete Template with parameters
 	 * @param posX position of the center of the rectangle
@@ -92,7 +92,7 @@ public class RectangleShape extends GraphicShape {
 	 * Is the rectangle in contact with something?
 	 * @return the inContact
 	 */
-	public boolean isInContact() {
+	public CircleShape getInContact() {
 		return inContact;
 	}
 
@@ -100,7 +100,7 @@ public class RectangleShape extends GraphicShape {
 	 * Set the rectangle in contact with something
 	 * @param inContact the inContact to set
 	 */
-	public void setInContact(boolean inContact) {
+	public void setInContact(CircleShape inContact) {
 		this.inContact = inContact;
 	}
 
