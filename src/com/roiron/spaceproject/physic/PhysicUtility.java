@@ -3,7 +3,7 @@ package com.roiron.spaceproject.physic;
 //This file is use to have some maths functions, to be able to performate operations on vectors of size
 // 2 and 3 (sum2 or sum3)
 
-class PhysicUtility {
+public class PhysicUtility {
 
 	public static double distance(double[] a,double[] b)
 	{

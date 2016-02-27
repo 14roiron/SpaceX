@@ -13,11 +13,11 @@ import java.awt.Graphics2D;
  */
 public class RectangleShape extends GraphicShape {
 
-	//Size of the rectangle, here posX, posY corresponds to the center of the rectangle
+	//Size of the rectangle, here posX, posY corresponds to the top left corner
 	private double height;
 	private double width;
 	
-	/**
+	/** Complete Template with parameters
 	 * @param posX position of the center of the rectangle
 	 * @param posY 
 	 * @param veloX velocity of the center of the rectangle
@@ -40,6 +40,7 @@ public class RectangleShape extends GraphicShape {
 	}
 
 	/**
+	 * first constructor with usefull parameters
 	 * @param posX
 	 * @param posY
 	 * @param theta
@@ -53,7 +54,7 @@ public class RectangleShape extends GraphicShape {
 	}
 
 	/**
-	 * draw the template
+	 * draw the rectangle in the template
 	 */
 	public void draw(Graphics g) {
 		
@@ -61,7 +62,7 @@ public class RectangleShape extends GraphicShape {
 		//rotate the screen to draw a easier rectangle
 		gg.rotate(getTheta(), getPosX(), getPosY());
 		gg.setColor(getColor());
-		gg.fillRect((int) (getPosX()-getWidth()/2.), (int) (getPosY()-getHeight()/2.),
+		gg.fillRect((int) (getPosX()), (int) (getPosY()),
 				(int) getWidth() , (int)getHeight());
 	    gg.dispose();//back to the normal Position
 	}
