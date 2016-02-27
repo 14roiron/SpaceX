@@ -8,7 +8,7 @@ public class Commandes {
 	public Commandes()
 	{
 		gasTank=GasTankCapacity;
-		angleThrust=0;
+		angleThrust=-Math.PI/2.;
 	}
 	/**
 	 * @return the thrust
@@ -24,10 +24,10 @@ public class Commandes {
 	}
 
 	public void increaseThrust() {
-		this.thrust+=0.5;
+		this.thrust+=0.1;
 	}
 	public void decreaseThrust() {
-		this.thrust-=0.5;
+		this.thrust-=0.1;
 	}
 	/**
 	 * @return the angleThrust

@@ -112,25 +112,38 @@ public class Main extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setContentPane(mainPanel);
 		this.setVisible(true);
-		
-		while(true)
-		{
-			for(int i=0;i<10;i++)
-			{
-				
-				motor.update();
-				Thread.sleep(1);
+		new Thread(new Runnable() {
+			JFrame main;
+			public Runnable set(JFrame jframe) {
+				this.main=jframe;
+				return this;
 			}
-			motor.simulate();
-			spacePanel.repaint();
-			angleControlPanel.repaint();
-			thrustProgressBar.setValue((int)(commandes.getThrust()*20.));
-			gasProgressBar.setValue((int)(commandes.getGasTankPerecentage()));
-			this.repaint();
-			
-			
-			
-		}
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				while(true)
+				{
+					for(int i=0;i<10;i++)
+					{
+						
+						motor.update();
+						try {
+							Thread.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					motor.simulate();
+					spacePanel.repaint();
+					angleControlPanel.repaint();
+					thrustProgressBar.setValue((int)(commandes.getThrust()*10.));
+					gasProgressBar.setValue((int)(commandes.getGasTankPerecentage()));
+					main.repaint();
+				}
+			}
+		}.set(this)).start();
+		
 		
 		
 	}

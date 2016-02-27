@@ -1,7 +1,7 @@
 package com.roiron.spaceproject.physic;
 
 //This file is use to have some maths functions, to be able to performate operations on vectors of size
-// 2 and 3 (sum2 or sum3)
+// 2 and 3 (sum2 or sum3 for example)
 
 public class PhysicUtility {
 	/**
@@ -27,6 +27,16 @@ public class PhysicUtility {
 		return new double[]{x,y};
 	}
 	/**
+	 * Generate Unity vector from an angle
+	 * @param theta
+	 * @return the unity vector double[x,y]
+	 */
+	public static double[] unityVector(double theta)
+	{
+		return new double[]{Math.cos(theta),Math.sin(theta)};
+		
+	}
+	/**
 	 * Get the norm of a 2 dimension vector
 	 * @param Vector A double[x,y]
 	 * @return the norm
@@ -46,6 +56,16 @@ public class PhysicUtility {
 		return new double[]{a[0]+b[0],a[1]+b[1]};
 	}
 	/**
+	 * get the sum of two 3-dimension vector
+	 * @param Vector A double[x,y,theta]
+	 * @param Vector B double[x,y,theta]
+	 * @return the vector which represent the sum
+	 */
+	public static double[] sum3(double[] a, double[] b)
+	{
+		return new double[]{a[0]+b[0],a[1]+b[1],a[2]+b[2]};
+	}
+	/**
 	 * get the difference of two 2-dimension vector
 	 * @param Vector A double[x,y]
 	 * @param Vector B double[x,y]
@@ -56,7 +76,7 @@ public class PhysicUtility {
 		return new double[]{a[0]-b[0],a[1]-b[1]};
 	}
 	/**
-	 * get the difference of two 2-dimension vector
+	 * get the scalar product of two 2-dimension vector
 	 * @param scalar a
 	 * @param Vector B double[x,y]
 	 * @return the vector which represent the product [a*x,a*y]
@@ -64,6 +84,16 @@ public class PhysicUtility {
 	public static double[] scalarProd(double lambda, double[] vect)
 	{
 		return new double[]{lambda*vect[0],lambda*vect[1]};
+	}
+	/**
+	 * get the scalar product of two 3-dimension vector
+	 * @param scalar a
+	 * @param Vector B double[x,y,theta]
+	 * @return the vector which represent the product [a*x,a*y,a*theta]
+	 */
+	public static double[] scalarProd3(double lambda, double[] vect)
+	{
+		return new double[]{lambda*vect[0],lambda*vect[1],lambda*vect[2]};
 	}
 	/**
 	 * Copy a vector of size 2

@@ -70,10 +70,10 @@ public abstract class GraphicShape extends GraphicObject {
 	public void update()
 	{
 
-		setPosX(getPosX()+getVeloX()/10.);
-		setPosY(getPosY()+getVeloY()/10.);
+		setPosX(getPosX()+getVeloX()/50.);
+		setPosY(getPosY()+getVeloY()/50.);
 		
-		setTheta(getTheta()+getVtheta()/100.);
+		setTheta(getTheta()+getVtheta()/500.);
 	}
 	/**
 	 * @return the posX
