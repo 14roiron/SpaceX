@@ -24,6 +24,11 @@ public class PhysicMotor {
 	private Commandes commandes;
 	public static final int height = 900;
 	public static final int width = 1100;
+	/**
+	 * Default constructor of the graphic motor
+	 * @param listGraphic object containing all drawing figures
+	 * @param commandes object, containing the user interactions.
+	 */
 	public PhysicMotor(List<GraphicObject> listGraphic, Commandes commandes) {
 		this.commandes=commandes;
 		synchronized(listGraphic)
@@ -51,7 +56,7 @@ public class PhysicMotor {
 		}
 
 	}
-
+	
 	public void update() {
 		synchronized (listGraphic) {
 			moon.setVelocity(updateMoon(earth.getState(), moon.getState(), moon.getVelocity()));
@@ -97,7 +102,10 @@ public class PhysicMotor {
 	}
 
 	
-
+	/**
+	 * Simulation of the trajectories of the moon and then the rocket, step by step
+	 *  supposing that we keep the same orders
+	 */
 	public void simulate() {
 		ObjectState[] moonList = new ObjectState[5000];
 		ObjectState previousState, curentState;
@@ -147,20 +155,38 @@ public class PhysicMotor {
 	 * @param pos1 pos of the body we want to evolve
 	 * @param pos2 post of the reference body
 	 * @param factor mass constant (-G Ma Mb)
-	 * @return
+	 * @return the force vecteur from b on a
 	 */
 	public double[] getForceVector(double[] pos1, double[] pos2, double factor) {
 		double F = -factor / Math.pow(PhysicUtility.distance(pos1, pos2), 2);
 		double[] vect = PhysicUtility.unityVector(PhysicUtility.substraction2(pos1, pos2));
 		return PhysicUtility.scalarProd(F, vect);
 	}
-
+	/**
+	 * Get the moon velocity update from the state parameters, the rocket is too light to influence the system
+	 * @param earthState
+	 * @param moonState
+	 * @param moonVelocity
+	 * @return the velocity for the next time period.
+	 */
 	public double[] updateMoon(double[] earthState, double[] moonState, double[] moonVelocity) {
 		double[] moonForces = getForceVector(moonState, earthState, earth.getMass() * moon.getMass());
 		double[] moonUpdate = PhysicUtility.scalarProd(1 / moon.getMass(), moonForces);
 		double[] moonSpeed = PhysicUtility.sum2(moonVelocity, moonUpdate);
 		return moonSpeed;
 	}
+	
+	/**
+	 * Get the rocket velocity update from different parameters of the considering situation
+	 * @param earthState
+	 * @param moonState
+	 * @param rocketState
+	 * @param rocketVelocity
+	 * @param rocketMass
+	 * @param thrust
+	 * @param print
+	 * @return the updatee of the velovity
+	 */
 	public double[] updateRocketVelocity(double[] earthState, double[] moonState, 
 			double[] rocketState, double[] rocketVelocity, double rocketMass,double thrust,boolean print)
 	{
@@ -173,6 +199,11 @@ public class PhysicMotor {
 			System.out.println("earthForce:"+PhysicUtility.norm2(earthForce));
 			System.out.println("moonForce:"+PhysicUtility.norm2(moonForce));
 			System.out.println("thrust:"+PhysicUtility.norm2(thrustForce));
+		}
+		//If the force is too high, just cancel it, it doesn't make any sense...
+		if(PhysicUtility.norm2(moonForce)>100 || PhysicUtility.norm2(earthForce)>100)
+		{
+			return new double[]{0,0,0};
 		}
 		double[] sum = PhysicUtility.sum2(earthForce, moonForce);
 		sum=PhysicUtility.sum2(sum, thrustForce);

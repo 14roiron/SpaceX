@@ -2,7 +2,7 @@ package com.roiron.spaceproject;
 
 public class Commandes {
 	public final static double MaxPropeller = 3;
-	private double thrust;
+	private double gasThrust;
 	private double angleThrust;
 	private double gasTank;
 	public final static double GasTankCapacity=5;
@@ -23,7 +23,7 @@ public class Commandes {
 	public double getThrustTotal() {
 		double thrustTotal=0;
 		if(gasTank>0)
-			thrustTotal+=thrust;
+			thrustTotal+=gasThrust;
 		if(isBoosterOn && boosterTank>0)
 			thrustTotal+=boosterTank*1.265;
 		return thrustTotal;
@@ -36,7 +36,7 @@ public class Commandes {
 	public double simulateThrust(int i){
 		double thrustTotal=0;
 		if(gasTank>i*getThrust()/10.)
-			thrustTotal+=thrust;
+			thrustTotal+=gasThrust;
 		if(isBoosterOn && boosterTank>i*0.1)
 			thrustTotal+=boosterTank*1.265;
 		return thrustTotal;
@@ -48,6 +48,11 @@ public class Commandes {
 	public double getMass(){
 		return boosterTank+gasTank;
 	}
+	/**
+	 * We simulate the mass of the system in i periods, keeping the parameters
+	 * @param i
+	 * @return the mass
+	 */
 	public double simulateMass(int i)
 	{
 		double boosterTankCopy=boosterTank;
@@ -56,8 +61,8 @@ public class Commandes {
 		{
 			if(isBoosterOn & boosterTankCopy>0)
 				boosterTankCopy-=0.0010;
-			if(getThrust()>0)
-				gasTankCopy-=thrust/500.;
+			if(getGasTank()>0)
+				gasTankCopy-=gasThrust/500.;
 		}
 		return gasTankCopy+boosterTankCopy;
 	}
@@ -71,15 +76,23 @@ public class Commandes {
 			boosterTank-=0.0010;
 		if(boosterTank<=0)
 			setBoosterOn(false);
-		if(getThrust()>0)
-			gasTank-=thrust/500.;
+		if(getGasTank()>0)
+		{
+			gasTank-=gasThrust/500.;
+			
+		}
+		else{
+			setThrust(0);
+		}
 	}
 	public void increaseThrust() {
 		isBoosterOn=true;
-		this.thrust+=0.1;
+		this.gasThrust+=0.1;
 	}
 	public void decreaseThrust() {
-		this.thrust-=0.1;
+		this.gasThrust-=0.1;
+		if(gasThrust<0)
+			gasThrust=0;
 	}
 	/**
 	 * @return the angleThrust
@@ -146,13 +159,13 @@ public class Commandes {
 	 * @return the thrust
 	 */
 	public double getThrust() {
-		return thrust;
+		return gasThrust;
 	}
 	/**
 	 * @param thrust the thrust to set
 	 */
 	public void setThrust(double thrust) {
-		this.thrust = thrust;
+		this.gasThrust = thrust;
 	}
 	
 	
