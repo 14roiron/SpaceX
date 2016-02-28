@@ -1,7 +1,5 @@
 package com.roiron.spaceproject;
 
-
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,47 +21,46 @@ import com.roiron.spaceproject.graphic.RectangleShape;
 import com.roiron.spaceproject.graphic.SpacePanel;
 import com.roiron.spaceproject.physic.PhysicMotor;
 
-public class Main extends JFrame{
-	
+public class Main extends JFrame {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	SpacePanel spacePanel;  //the main frame, where we draw the space
+	SpacePanel spacePanel; // the main frame, where we draw the space
 	AngleControlPanel angleControlPanel;
 	Commandes commandes;
 	JPanel controlPannel;
+	KeyListener keyListener;
 	JProgressBar thrustProgressBar;
 	JProgressBar gasProgressBar;
 	JProgressBar boosterProgressBar;
 	JLabel statutLabel;
 	JPanel mainPanel;
 	PhysicMotor motor;
-	
-	
-	public Main () throws InterruptedException
-	{
-	
+	Run thread;
+
+	public Main() throws InterruptedException {
+		this.setTitle("Space Simulation");
+		this.setSize(1300, 1000);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+
 		start();
 
 	}
-	public void start()
-	{
+
+	public void start() {
 		spacePanel = new SpacePanel();
-		commandes=new Commandes();
+		commandes = new Commandes();
 
-
-		motor = new PhysicMotor(spacePanel.getListObject(),commandes); 
-		
-		this.addKeyListener(new KeyListener() {
-
+		motor = new PhysicMotor(spacePanel.getListObject(), commandes);
+		keyListener = new KeyListener() {
 
 			public void keyTyped(KeyEvent arg0) {
 
 			}
 
-
-			
 			public void keyPressed(KeyEvent arg0) {
 				if (arg0.getKeyChar() == 'w') {
 					commandes.increaseThrust();
@@ -77,109 +74,137 @@ public class Main extends JFrame{
 				if (arg0.getKeyChar() == 'a') {
 					commandes.decreaseAngleThrust();
 				}
-
+				if (arg0.getKeyChar() == 'r') {
+					stop();
+					start();
+				}
+				if (arg0.getKeyChar() == 'p') {
+					thread.pause();
+				}
 			}
-
 
 			public void keyReleased(KeyEvent e) {
-				
+
 			}
-		});
+		};
+		this.addKeyListener(keyListener);
 		controlPannel = new JPanel();
-		controlPannel.setLayout(new GridLayout(5,2));
-		
+		controlPannel.setLayout(new GridLayout(5, 2));
+
 		controlPannel.add(new JLabel("Thrust power"));
 		thrustProgressBar = new JProgressBar(0, 100);
 		thrustProgressBar.setValue(0);
 		thrustProgressBar.setStringPainted(false);
 		controlPannel.add(thrustProgressBar);
-		
-		
+
 		controlPannel.add(new JLabel("angle direction"));
-		angleControlPanel=new AngleControlPanel(commandes);
+		angleControlPanel = new AngleControlPanel(commandes);
 		controlPannel.add(angleControlPanel);
-		
-		
+
 		controlPannel.add(new JLabel("Remaining gas"));
 		gasProgressBar = new JProgressBar(0, 100);
 		gasProgressBar.setValue(0);
 		gasProgressBar.setStringPainted(true);
 		controlPannel.add(gasProgressBar);
-		
+
 		controlPannel.add(new JLabel("Remaining booster"));
 		boosterProgressBar = new JProgressBar(0, 100);
 		boosterProgressBar.setValue(0);
 		boosterProgressBar.setStringPainted(true);
 		controlPannel.add(boosterProgressBar);
-		
+
 		controlPannel.add(new JLabel("Statut"));
 		statutLabel = new JLabel("Landed");
 		statutLabel.setForeground(Color.green);
 		controlPannel.add(statutLabel);
-		
-		
-		mainPanel=new JPanel();
-		mainPanel.setLayout(null);
-		controlPannel.setBounds(1300-200, 0, 200, 300);
-	    mainPanel.add(controlPannel);
-		spacePanel.setBounds(0, 0,1300, 1000);
-	    mainPanel.add(spacePanel);
-	    
 
-		
-		
-		this.setTitle("Space Simulation");
-		this.setSize(1300, 1000);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLocationRelativeTo(null);
+		mainPanel = new JPanel();
+		mainPanel.setLayout(null);
+		controlPannel.setBounds(1300 - 200, 0, 200, 300);
+		mainPanel.add(controlPannel);
+		spacePanel.setBounds(0, 0, 1300, 1000);
+		mainPanel.add(spacePanel);
+
 		this.setContentPane(mainPanel);
 		this.setVisible(true);
-		
-		while(true)
-		{
-			
-			for(int i=0;i<10;i++)
-			{
-				
-				motor.update();
-				try {
-					Thread.sleep(5);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			motor.simulate();
-			updateGraphic();
-		}
+
+		thread = new Run();
+		thread.start();
+
 	}
-	public void updateGraphic()
-	{
+
+	public void stop() {
+		this.removeKeyListener(keyListener);
+		this.remove(mainPanel);
+		thread.interrupt();
+	}
+
+	public void updateGraphic() {
 		spacePanel.repaint();
 		angleControlPanel.repaint();
-		thrustProgressBar.setValue((int)(commandes.getGasThrust()*10.));
-		gasProgressBar.setValue((int)(commandes.getGasTankPerecentage()));
-		boosterProgressBar.setValue((int)(commandes.getBoosterTankPerecentage()));
-		if(commandes.isCrached())
-		{
-			statutLabel.setText("crashed");;
+		thrustProgressBar.setValue((int) (commandes.getGasThrust() * 20.));
+		gasProgressBar.setValue((int) (commandes.getGasTankPerecentage()));
+		boosterProgressBar.setValue((int) (commandes.getBoosterTankPerecentage()));
+		if (commandes.isCrached()) {
+			statutLabel.setText("crashed");
 			statutLabel.setForeground(Color.red);
-		}
-		else if (((RectangleShape)(spacePanel.getElementListObjectById(3))).getInContact()!=null) {
-			
+		} else if (((RectangleShape) (spacePanel.getElementListObjectById(3))).getInContact() != null) {
+
 			statutLabel.setText("Landed");
 			statutLabel.setForeground(Color.green);
-		}
-		else {
+		} else {
 			statutLabel.setText("In flight");
 			statutLabel.setForeground(Color.blue);
 		}
 		this.repaint();
 	}
+
 	public static void main(String[] args) throws InterruptedException {
 		new Main();
 
 	}
-	
+
+	public class Run extends Thread {
+		boolean running;
+		boolean pause;
+
+		@Override
+		public void run() {
+			running = true;
+			while (running) {
+
+				for (int i = 0; i < 10; i++) {
+
+					motor.update();
+					try {
+						Thread.sleep(5);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				motor.simulate();
+				updateGraphic();
+				while (pause) {
+					try {
+						Thread.sleep(5);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+
+		}
+
+		public void interrupt() {
+			running = false;
+		}
+
+		public void pause() {
+			pause = !pause;
+		}
+
+	}
 
 }
