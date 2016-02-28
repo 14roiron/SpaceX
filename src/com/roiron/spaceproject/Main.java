@@ -1,20 +1,19 @@
 package com.roiron.spaceproject;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JTextField;
 
 import com.roiron.spaceproject.graphic.AngleControlPanel;
 import com.roiron.spaceproject.graphic.RectangleShape;
@@ -24,7 +23,7 @@ import com.roiron.spaceproject.physic.PhysicMotor;
 public class Main extends JFrame {
 
 	/**
-	 * 
+	 * create varriable for the gui of the main frame
 	 */
 	private static final long serialVersionUID = 1L;
 	SpacePanel spacePanel; // the main frame, where we draw the space
@@ -39,7 +38,7 @@ public class Main extends JFrame {
 	JPanel mainPanel;
 	PhysicMotor motor;
 	Run thread;
-	
+
 	JPanel informationsPanel;
 	JLabel informationsLabel;
 
@@ -52,7 +51,9 @@ public class Main extends JFrame {
 		start();
 
 	}
-
+	/**
+	 * We initialise everything for the gui of the main window
+	 */
 	public void start() {
 		spacePanel = new SpacePanel();
 		commandes = new Commandes();
@@ -90,6 +91,8 @@ public class Main extends JFrame {
 
 			}
 		};
+		
+		//creating the gui
 		this.addKeyListener(keyListener);
 		controlPannel = new JPanel();
 		controlPannel.setLayout(new GridLayout(5, 2));
@@ -110,7 +113,7 @@ public class Main extends JFrame {
 		gasProgressBar.setStringPainted(true);
 		controlPannel.add(gasProgressBar);
 
-		controlPannel.add(new JLabel("Remaining booster"));
+		controlPannel.add(new JLabel("fuel booster"));
 		boosterProgressBar = new JProgressBar(0, 100);
 		boosterProgressBar.setValue(0);
 		boosterProgressBar.setStringPainted(true);
@@ -120,21 +123,48 @@ public class Main extends JFrame {
 		statutLabel = new JLabel("Landed");
 		statutLabel.setForeground(Color.green);
 		controlPannel.add(statutLabel);
-		
-		informationsLabel=new JLabel(commandes.getInfos());
-		informationsPanel=new JPanel();
+
+		informationsLabel = new JLabel(commandes.getInfos());
+		informationsPanel = new JPanel();
 		informationsPanel.add(informationsLabel);
-		
 
 		mainPanel = new JPanel();
 		mainPanel.setLayout(null);
 		controlPannel.setBounds(1300 - 200, 0, 200, 300);
 		mainPanel.add(controlPannel);
-		informationsPanel.setBounds(1300 - 250, 1000-200, 250, 200);
+		informationsPanel.setBounds(1300 - 250, 1000 - 200, 250, 200);
 		mainPanel.add(informationsPanel);
 		spacePanel.setBounds(0, 0, 1300, 1000);
 		mainPanel.add(spacePanel);
-		
+
+		// Set the help menu
+		JMenuBar mb = new JMenuBar();
+		this.setJMenuBar(mb);
+		JMenuItem menu = new JMenuItem();
+		menu.setText("Help");
+		menu.setEnabled(true);
+		menu.addActionListener(new ActionListener() {
+			JFrame f;
+
+			ActionListener set(JFrame f) {
+				this.f = f;
+				return this;
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(f,
+						"You have to control a rocket, without crashing it\n you can control it using"+
+				"w,s( for the engine) and a,d, (to control the angle.)\n"+
+						"When you start, you cannot stop your booster!\n"+
+				"You can restart with r and pause with p\n"+
+				"You can see informations about your rocket on the right (booster and "
+				+ "motor fuel, thrust and thrust angle...)\n"+
+						"good luck");
+			}
+		}.set(this));
+
+		mb.add(menu);
 
 		this.setContentPane(mainPanel);
 		this.setVisible(true);
@@ -143,6 +173,7 @@ public class Main extends JFrame {
 		thread.start();
 
 	}
+
 	/**
 	 * Stop the thread and reset the parameters
 	 */
@@ -151,12 +182,13 @@ public class Main extends JFrame {
 		this.remove(mainPanel);
 		thread.interrupt();
 	}
+
 	/**
 	 * configure and draw everything
 	 */
 	public void updateGraphic() {
-		//spacePanel.repaint();
-		//angleControlPanel.repaint();
+		// spacePanel.repaint();
+		// angleControlPanel.repaint();
 		thrustProgressBar.setValue((int) (commandes.getGasThrust() * 20.));
 		gasProgressBar.setValue((int) (commandes.getGasTankPerecentage()));
 		boosterProgressBar.setValue((int) (commandes.getBoosterTankPerecentage()));
@@ -164,7 +196,7 @@ public class Main extends JFrame {
 		if (commandes.isCrached()) {
 			statutLabel.setText("crashed");
 			statutLabel.setForeground(Color.red);
-		} else if (((RectangleShape) (spacePanel.getElementListObjectById(3))).getInContact() != null) {
+		} else if (spacePanel.getListObject().size()>4 && ((RectangleShape) (spacePanel.getElementListObjectById(3))).getInContact() != null) {
 
 			statutLabel.setText("Landed");
 			statutLabel.setForeground(Color.green);
@@ -179,7 +211,12 @@ public class Main extends JFrame {
 		new Main();
 
 	}
-
+	/**
+	 * the main thread that we start to calculate the physics, and give order for 
+	 * swing to draw everything on an other thread
+	 * @author Yohann
+	 *
+	 */
 	public class Run extends Thread {
 		boolean running;
 		boolean pause;
@@ -188,21 +225,19 @@ public class Main extends JFrame {
 		public void run() {
 			running = true;
 			while (running) {
-				for(int i=0;i<5;i++)
+				for (int i = 0; i < 5; i++)
 					motor.update();
 				motor.simulate();
 				updateGraphic();
 				try {
 					Thread.sleep(10);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				while (pause) {
 					try {
 						Thread.sleep(5);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}

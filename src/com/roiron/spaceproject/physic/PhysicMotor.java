@@ -43,14 +43,14 @@ public class PhysicMotor {
 			moon.setVeloY(20);
 			listGraphic.add(moon);
 
-			moonCurve = new LineCurve();
+			moonCurve = new LineCurve(Color.gray);
 			listGraphic.add(moonCurve);
 
 			rocket = new RectangleShape(width / 2, height / 2 - 40 - 10, 0, Color.DARK_GRAY, 20, 30, 30);
 			rocket.setInContact(earth);
 			listGraphic.add(rocket);
 
-			rocketCurve = new LineCurve();
+			rocketCurve = new LineCurve(Color.white);
 			listGraphic.add(rocketCurve);
 
 		}
@@ -68,8 +68,6 @@ public class PhysicMotor {
 
 			commandes.update();// decrease the tank stock
 			rocket.setTheta(commandes.getAngleThrust() + Math.PI / 2);
-
-			boolean inContact = Collision.simpleCollision(rocket, earth);
 
 			// we just arrive in contact with earth or moon.
 			if ((rocket.getInContact() == null)

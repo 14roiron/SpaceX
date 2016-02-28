@@ -1,6 +1,5 @@
 package com.roiron.spaceproject;
 
-import java.io.ObjectInputStream.GetField;
 
 public class Commandes {
 
@@ -15,7 +14,7 @@ public class Commandes {
 	public final static double BoosterTankCapacity = 35;
 	private boolean isCrached;
 	public static double ptWration = 1.5; // power to weight ratio
-	public static double consumption = 0.23; // power to weight ratio
+	public static double consumption = 0.23; // Consumption per time
 	
 	private String RocketInfo;
 
@@ -50,10 +49,18 @@ public class Commandes {
 	 */
 	public double simulateThrust(int i) {
 		double thrustTotal = 0;
-		if (gasTank > i * getGasThrust() / 10.)
+		double boosterTankCopy = boosterTank;
+		double gasTankCopy = gasTank;
+		for (int j = 0; j < i; j++) {
+			if (isBoosterOn & boosterTankCopy > 0)
+				boosterTankCopy -= consumption;
+			if (getGasTank() > 0)
+				gasTankCopy -= gasThrust / 500.;
+		}//We simulate the capacity of tanks in i periods
+		if (gasTankCopy > 0)
 			thrustTotal += gasThrust;
-		if (isBoosterOn && boosterTank > i * consumption)
-			thrustTotal += boosterTank * ptWration;
+		if (isBoosterOn && boosterTankCopy > 0)
+			thrustTotal += boosterTankCopy * ptWration;
 		return thrustTotal;
 	}
 
@@ -69,7 +76,7 @@ public class Commandes {
 	/**
 	 * We simulate the mass of the system in i periods, keeping the parameters
 	 * 
-	 * @param i
+	 * @param i number of periods
 	 * @return the mass
 	 */
 	public double simulateMass(int i) {
@@ -132,11 +139,15 @@ public class Commandes {
 	public void setAngleThrust(double angleThrust) {
 		this.angleThrust = angleThrust;
 	}
-
+	/**
+	 * increase the rocket angle
+	 */
 	public void increaseAngleThrust() {
 		this.angleThrust += 1 / 5.;
 	}
-
+	/**
+	 * decrease the rocket angle
+	 */
 	public void decreaseAngleThrust() {
 		this.angleThrust -= 1 / 5.;
 	}

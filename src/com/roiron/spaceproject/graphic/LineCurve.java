@@ -4,23 +4,22 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import com.roiron.spaceproject.physic.ObjectState;
 
 public class LineCurve extends GraphicObject {
 
 	ObjectState[] pointsList;
-	public LineCurve()
+	Color color;
+	public LineCurve(Color c)
 	{
 		pointsList=new ObjectState[0];
+		color=c;
 	}
 	public void draw(Graphics g) {
 
 		ObjectState current,previous;
-		g.setColor(Color.white);
+		g.setColor(color);
 		for(int i=1;i<pointsList.length;i++)
 		{
 			current=pointsList[i];

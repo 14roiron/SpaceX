@@ -46,7 +46,9 @@ public class CircleShape extends GraphicShape {
 		this.radius=radius;
 	}
 
-
+	/**
+	 * Drwing fucntion called by swing, draw a full circle
+	 */
 	public void draw(Graphics g) {
 		
 		Graphics2D gg = (Graphics2D) g.create();
@@ -59,6 +61,7 @@ public class CircleShape extends GraphicShape {
 	}
 
 	/**
+	 * get the radius of the circle
 	 * @return the radius
 	 */
 	public double getRadius() {

@@ -1,15 +1,7 @@
 package com.roiron.spaceproject.collisions;
 
-import java.awt.Color;
-import java.util.List;
-
-import javax.swing.JFrame;
-
-import com.roiron.spaceproject.Main;
 import com.roiron.spaceproject.graphic.CircleShape;
-import com.roiron.spaceproject.graphic.GraphicObject;
 import com.roiron.spaceproject.graphic.RectangleShape;
-import com.roiron.spaceproject.graphic.SpacePanel;
 import com.roiron.spaceproject.physic.PhysicUtility;
 
 public class Collision{

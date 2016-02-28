@@ -1,9 +1,6 @@
 package com.roiron.spaceproject.graphic;
 
 import java.awt.Color;
-import java.awt.Graphics;
-
-import javax.print.attribute.standard.PrinterLocation;
 
 import com.roiron.spaceproject.physic.ObjectState;
 
@@ -73,6 +70,7 @@ public abstract class GraphicShape extends GraphicObject {
 	}
 
 	/**
+	 * get the X position of the figure
 	 * @return the posX
 	 */
 	public double getPosX() {
@@ -80,6 +78,7 @@ public abstract class GraphicShape extends GraphicObject {
 	}
 
 	/**
+	 * 
 	 * @param posX
 	 *            the posX to set
 	 */
@@ -88,6 +87,7 @@ public abstract class GraphicShape extends GraphicObject {
 	}
 
 	/**
+	 * get the ordinate position of the object
 	 * @return the posY
 	 */
 	public double getPosY() {
@@ -103,6 +103,7 @@ public abstract class GraphicShape extends GraphicObject {
 	}
 
 	/**
+	 * get the X velocity of the object
 	 * @return the veloX
 	 */
 	public double getVeloX() {
@@ -117,7 +118,8 @@ public abstract class GraphicShape extends GraphicObject {
 		this.veloX = veloX;
 	}
 
-	/**
+	/** 
+	 * get the Y velocity of the object
 	 * @return the veloY
 	 */
 	public double getVeloY() {
@@ -133,6 +135,7 @@ public abstract class GraphicShape extends GraphicObject {
 	}
 
 	/**
+	 * get the main angle of the object
 	 * @return the theta
 	 */
 	public double getTheta() {
@@ -148,6 +151,7 @@ public abstract class GraphicShape extends GraphicObject {
 	}
 
 	/**
+	 * get the thetha velocity
 	 * @return the vtheta
 	 */
 	public double getVtheta() {
@@ -163,6 +167,7 @@ public abstract class GraphicShape extends GraphicObject {
 	}
 
 	/**
+	 * get the color of the object
 	 * @return the color
 	 */
 	public Color getColor() {
@@ -224,7 +229,8 @@ public abstract class GraphicShape extends GraphicObject {
 
 	}
 
-	/**
+	/**get the mass of the object
+	 * 
 	 * @return the mass
 	 */
 	public double getMass() {

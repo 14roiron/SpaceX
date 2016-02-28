@@ -2,16 +2,13 @@ package com.roiron.spaceproject.graphic;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.roiron.spaceproject.Commandes;
-import com.roiron.spaceproject.Main;
 
 public class AngleControlPanel extends JPanel{
 
@@ -22,9 +19,10 @@ public class AngleControlPanel extends JPanel{
 		super();
 		this.commandes=commandes;
 	}
-	
+	/**
+	 * Draw a circle with a line, in order to control the angle of the rocket
+	 */
 	public void paintComponent(Graphics g) {
-		int size=100;
 		double radius=(Math.min(getHeight(), getWidth())/2.)*0.90;
 		g.setColor(Color.white);
 		g.fillOval(0, 0, (int)radius*2, (int)radius*2);
