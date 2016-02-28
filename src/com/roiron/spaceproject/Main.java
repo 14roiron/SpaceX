@@ -56,7 +56,6 @@ public class Main extends JFrame{
 			public void keyPressed(KeyEvent arg0) {
 				if (arg0.getKeyChar() == 'w') {
 					commandes.increaseThrust();
-					System.out.println("w");
 				}
 				if (arg0.getKeyChar() == 's') {
 					commandes.decreaseThrust();
@@ -115,6 +114,11 @@ public class Main extends JFrame{
 		
 		while(true)
 		{
+			spacePanel.repaint();
+			angleControlPanel.repaint();
+			thrustProgressBar.setValue((int)(commandes.getGasThrust()*10.));
+			gasProgressBar.setValue((int)(commandes.getGasTankPerecentage()));
+			this.repaint();
 			for(int i=0;i<10;i++)
 			{
 				
@@ -126,12 +130,8 @@ public class Main extends JFrame{
 					e.printStackTrace();
 				}
 			}
-			motor.simulate();
-			spacePanel.repaint();
-			angleControlPanel.repaint();
-			thrustProgressBar.setValue((int)(commandes.getThrust()*10.));
-			gasProgressBar.setValue((int)(commandes.getGasTankPerecentage()));
-			this.repaint();
+			//motor.simulate();
+			
 		}
 			
 

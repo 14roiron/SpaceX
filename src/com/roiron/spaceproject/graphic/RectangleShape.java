@@ -6,6 +6,11 @@ package com.roiron.spaceproject.graphic;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 /**
  * @author Yohann Roiron
@@ -17,6 +22,7 @@ public class RectangleShape extends GraphicShape {
 	private double height;
 	private double width;
 	private CircleShape inContact; 
+	BufferedImage image;
 	
 	/** Complete Template with parameters
 	 * @param posX position of the center of the rectangle
@@ -37,7 +43,13 @@ public class RectangleShape extends GraphicShape {
 			double vtheta, Color color, double width, double height,double mass) {
 		super(posX, posY, veloX, veloY,  theta, vtheta, color,mass);
 		this.height=height;
-		this.width=width;
+		this.width=width;try {
+		image = ImageIO.read(new File("rocket"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -52,6 +64,13 @@ public class RectangleShape extends GraphicShape {
 		super(posX, posY, theta, color,mass);
 		this.height=height;
 		this.width=width;
+		try {
+			image = ImageIO.read(new File("rocket.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -63,8 +82,10 @@ public class RectangleShape extends GraphicShape {
 		//rotate the screen to draw a easier rectangle
 		gg.rotate(getTheta(), getPosX(), getPosY());
 		gg.setColor(getColor());
-		gg.fillRect((int) (getPosX()-getWidth()/2.), (int) (getPosY()-getHeight()/2.),
-				(int) getWidth() , (int)getHeight());
+		//gg.fillRect((int) (getPosX()-getWidth()/2.), (int) (getPosY()-getHeight()/2.),
+			//	(int) getWidth() , (int)getHeight());
+		gg.drawImage(image, (int) (getPosX()-getWidth()/2.), (int) 
+				(getPosY()-getHeight()/2.), (int) getWidth(), (int)getHeight(), null);
 	    gg.dispose();//back to the normal Position
 	}
 

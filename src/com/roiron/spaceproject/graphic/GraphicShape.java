@@ -3,6 +3,8 @@ package com.roiron.spaceproject.graphic;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.print.attribute.standard.PrinterLocation;
+
 import com.roiron.spaceproject.physic.ObjectState;
 
 
@@ -73,7 +75,7 @@ public abstract class GraphicShape extends GraphicObject {
 		setPosX(getPosX()+getVeloX()/50.);
 		setPosY(getPosY()+getVeloY()/50.);
 		
-		setTheta(getTheta()+getVtheta()/500.);
+		//setTheta(getTheta()+getVtheta()/500.);
 	}
 	/**
 	 * @return the posX
@@ -179,8 +181,8 @@ public abstract class GraphicShape extends GraphicObject {
 	{
 		setPosX(state[0]);
 		setPosY(state[1]);
-		if(state.length>2)
-			setTheta(state[2]);
+		//if(state.length>2)
+			//setTheta(state[2]);
 	}
 	/**
 	 * Get Velocity by vector

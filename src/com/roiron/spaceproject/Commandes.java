@@ -1,14 +1,26 @@
 package com.roiron.spaceproject;
 
 public class Commandes {
-	public final static double MaxPropeller = 3;
+	
+	//Thrust of the engine
 	private double gasThrust;
+	//angle of the rocket.
 	private double angleThrust;
 	private double gasTank;
 	public final static double GasTankCapacity=5;
 	private boolean isBoosterOn;
 	private double boosterTank;
 	public final static double BoosterTankCapacity=20;
+	private boolean isCrached;
+	public static double ptWration=1.4; //power to weight ratio
+	public static double consumption=0.05; //power to weight ratio
+	
+	
+	
+	
+	
+	
+	
 	public Commandes()
 	{
 		gasTank=GasTankCapacity;
@@ -25,7 +37,7 @@ public class Commandes {
 		if(gasTank>0)
 			thrustTotal+=gasThrust;
 		if(isBoosterOn && boosterTank>0)
-			thrustTotal+=boosterTank*1.265;
+			thrustTotal+=boosterTank*ptWration;
 		return thrustTotal;
 	}
 	/**
@@ -35,10 +47,10 @@ public class Commandes {
 	 */
 	public double simulateThrust(int i){
 		double thrustTotal=0;
-		if(gasTank>i*getThrust()/10.)
+		if(gasTank>i*getGasThrust()/10.)
 			thrustTotal+=gasThrust;
-		if(isBoosterOn && boosterTank>i*0.1)
-			thrustTotal+=boosterTank*1.265;
+		if(isBoosterOn && boosterTank>i*consumption)
+			thrustTotal+=boosterTank*ptWration;
 		return thrustTotal;
 	}
 	/**
@@ -60,7 +72,7 @@ public class Commandes {
 		for(int j=0;j<i;j++)
 		{
 			if(isBoosterOn & boosterTankCopy>0)
-				boosterTankCopy-=0.0010;
+				boosterTankCopy-=consumption;
 			if(getGasTank()>0)
 				gasTankCopy-=gasThrust/500.;
 		}
@@ -73,16 +85,17 @@ public class Commandes {
 	public void update()
 	{
 		if(isBoosterOn)
-			boosterTank-=0.0010;
+			boosterTank-=consumption; 
 		if(boosterTank<=0)
 			setBoosterOn(false);
+		//is the gas tank empty?
 		if(getGasTank()>0)
 		{
 			gasTank-=gasThrust/500.;
 			
 		}
 		else{
-			setThrust(0);
+			setGasThrust(0);
 		}
 	}
 	public void increaseThrust() {
@@ -156,16 +169,28 @@ public class Commandes {
 		this.boosterTank = boosterTank;
 	}
 	/**
-	 * @return the thrust
+	 * @return the gasThrust
 	 */
-	public double getThrust() {
+	public double getGasThrust() {
 		return gasThrust;
 	}
 	/**
-	 * @param thrust the thrust to set
+	 * @param gasThrust the gasThrust to set
 	 */
-	public void setThrust(double thrust) {
-		this.gasThrust = thrust;
+	public void setGasThrust(double gasThrust) {
+		this.gasThrust = gasThrust;
+	}
+	/**
+	 * @return the isCrached
+	 */
+	public boolean isCrached() {
+		return isCrached;
+	}
+	/**
+	 * @param isCrached the isCrached to set
+	 */
+	public void setCrached(boolean isCrached) {
+		this.isCrached = isCrached;
 	}
 	
 	

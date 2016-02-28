@@ -29,7 +29,6 @@ public class AngleControlPanel extends JPanel{
 		g.setColor(Color.white);
 		g.fillOval(0, 0, (int)radius*2, (int)radius*2);
 		g.setColor(Color.gray);
-		System.out.println();
 		
 		
 		

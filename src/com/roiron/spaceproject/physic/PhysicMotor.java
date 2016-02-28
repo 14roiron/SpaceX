@@ -3,15 +3,12 @@ package com.roiron.spaceproject.physic;
 import java.awt.Color;
 import java.util.List;
 
-import javax.print.attribute.standard.PrinterLocation;
-
 import com.roiron.spaceproject.Commandes;
 import com.roiron.spaceproject.collisions.Collision;
 import com.roiron.spaceproject.graphic.CircleShape;
 import com.roiron.spaceproject.graphic.GraphicObject;
 import com.roiron.spaceproject.graphic.LineCurve;
 import com.roiron.spaceproject.graphic.RectangleShape;
-import com.roiron.spaceproject.graphic.SpacePanel;
 
 public class PhysicMotor {
 
@@ -42,56 +39,80 @@ public class PhysicMotor {
 	
 			moon = new CircleShape(width * 9 / 10, height / 2, 0, Color.white, height / 30,
 					400);
-			moon.setVeloY(35);
+			moon.setVeloY(33);
 			listGraphic.add(moon);
 	
 			moonCurve = new LineCurve();
 			listGraphic.add(moonCurve);
 			
-			rocket = new RectangleShape(width/2, height/2-height/10-30, 0, Color.gray, 40, 60, 10);
+			rocket = new RectangleShape(width/2, height/2-height/10-25, 0, Color.gray, 40, 60, 30);
+			rocket.setInContact(earth);
 			listGraphic.add(rocket);
 			
 			rocketCurve = new LineCurve();
 			listGraphic.add(rocketCurve);
+			
+			commandes.increaseThrust();
 		}
 
 	}
 	
 	public void update() {
+		//if we already crashed on the planet it's done
+		if(commandes.isCrached())
+			return;
+		
 		synchronized (listGraphic) {
+			
 			moon.setVelocity(updateMoon(earth.getState(), moon.getState(), moon.getVelocity()));
-			commandes.update();
-			if(!(rocket.getInContact()==null) && (Collision.simpleCollision(rocket, earth) 
-					|| Collision.simpleCollision(rocket, moon)))//we just arrive in contact with earth or moon.
+			
+			commandes.update();//decrease the tank stock
+			rocket.setTheta(commandes.getAngleThrust()+Math.PI/2);
+			
+			boolean inContact=Collision.simpleCollision(rocket, earth);
+			
+			//we just arrive in contact with earth or moon.
+			if((rocket.getInContact()==null) && (Collision.simpleCollision(rocket, earth) 
+					|| Collision.simpleCollision(rocket, moon)))
 			{
 				
 				if(Collision.simpleCollision(rocket, earth))
 					rocket.setInContact(earth);
 				else
 					rocket.setInContact(moon);
+				if(PhysicUtility.norm2(PhysicUtility.substraction2(rocket.getVelocity(), 
+						rocket.getInContact().getVelocity()))>10){
+					commandes.setCrached(true);
+				}
 				
 			}
 			else if(rocket.getInContact()!=null)
 			{
-				rocket.setTheta(commandes.getAngleThrust());
 				double gravityForceNorm=PhysicUtility.norm2(getForceVector(rocket.getState(), 
 						rocket.getInContact().getState(), 
-						rocket.getMass()*rocket.getInContact().getMass()));
+						rocket.getMass()*rocket.getInContact().getMass(),false));
 				
 				//we have enough thrust to leave the planet.
 				if(commandes.getThrustTotal()>gravityForceNorm)
 				{
-					rocket.setState(updateRocketVelocity(earth.getState(), moon.getState(), rocket.getState(),
+					rocket.setVelocity(updateRocketVelocity(earth.getState(), moon.getState(), rocket.getState(),
 							rocket.getVelocity(), rocket.getMass(), commandes.getThrustTotal(),false));
 				}
+				else
+					rocket.setVelocity(rocket.getInContact().getVelocity());
 				
 				//we just left a planet
-				if(!Collision.simpleCollision(rocket, earth) && Collision.simpleCollision(rocket, moon))
+				if(!Collision.simpleCollision(rocket, rocket.getInContact()) )
 				{
 					rocket.setInContact(null);
 					
 				}
 			}
+			else {
+				rocket.setVelocity(updateRocketVelocity(earth.getState(), moon.getState(), rocket.getState(),
+						rocket.getVelocity(), rocket.getMass(), commandes.getThrustTotal(),false));
+			}
+			//*/
 			for (GraphicObject object : listGraphic) {
 				object.update();
 			}
@@ -126,6 +147,7 @@ public class PhysicMotor {
 		
 		ObjectState[] rocketList = new ObjectState[1000];
 		rocketList[0] = rocket.getGlobalState();
+		rocketList[0].setMass(rocket.getMass()+commandes.simulateMass(0));
 		for (int i = 1; i < rocketList.length; i++) {
 			// For every step we plot the moon state from the previous one,
 			// using the update equation
@@ -137,12 +159,12 @@ public class PhysicMotor {
 			curentState.setVelocityXY(
 					updateRocketVelocity(earth.getState(), moonList[i].getPositionXY(), previousState.getPositionXY(),
 							previousState.getVelocityXY(), curentState.getMass(),commandes.simulateThrust(i),false));
-			double[] update = PhysicUtility.scalarProd3(1./10., curentState.getVelocity());
+			double[] update = PhysicUtility.scalarProd3(1./50., curentState.getVelocity());
 			double[] sum = PhysicUtility.sum3(update, previousState.getPosition());
 			curentState.setPosition(sum);
 		}
 		updateRocketVelocity(earth.getState(), moonList[0].getPositionXY(), rocketList[0].getPositionXY(),
-				rocketList[0].getVelocityXY(), rocketList[1].getMass(),commandes.simulateThrust(0),true);
+				rocketList[0].getVelocityXY(), rocketList[0].getMass(),commandes.simulateThrust(0),true);
 		synchronized (listGraphic) {
 			moonCurve.setPointsList(moonList);
 			rocketCurve.setPointsList(rocketList);
@@ -155,10 +177,16 @@ public class PhysicMotor {
 	 * @param pos1 pos of the body we want to evolve
 	 * @param pos2 post of the reference body
 	 * @param factor mass constant (-G Ma Mb)
-	 * @return the force vecteur from b on a
+	 * @return the force vector from b on a
 	 */
-	public double[] getForceVector(double[] pos1, double[] pos2, double factor) {
+	public double[] getForceVector(double[] pos1, double[] pos2, double factor,boolean print) {
 		double F = -factor / Math.pow(PhysicUtility.distance(pos1, pos2), 2);
+		if(print)
+		{
+			System.out.println("factor: "+factor);
+			System.out.println("distance: "+Math.pow(PhysicUtility.distance(pos1, pos2), 2));
+			System.out.println("F: "+F);
+		}
 		double[] vect = PhysicUtility.unityVector(PhysicUtility.substraction2(pos1, pos2));
 		return PhysicUtility.scalarProd(F, vect);
 	}
@@ -170,7 +198,7 @@ public class PhysicMotor {
 	 * @return the velocity for the next time period.
 	 */
 	public double[] updateMoon(double[] earthState, double[] moonState, double[] moonVelocity) {
-		double[] moonForces = getForceVector(moonState, earthState, earth.getMass() * moon.getMass());
+		double[] moonForces = getForceVector(moonState, earthState, earth.getMass() * moon.getMass(),false);
 		double[] moonUpdate = PhysicUtility.scalarProd(1 / moon.getMass(), moonForces);
 		double[] moonSpeed = PhysicUtility.sum2(moonVelocity, moonUpdate);
 		return moonSpeed;
@@ -190,8 +218,8 @@ public class PhysicMotor {
 	public double[] updateRocketVelocity(double[] earthState, double[] moonState, 
 			double[] rocketState, double[] rocketVelocity, double rocketMass,double thrust,boolean print)
 	{
-		double[] earthForce = getForceVector(rocketState, earthState, earth.getMass() * rocketMass);
-		double[] moonForce = getForceVector(rocketState, moonState, moon.getMass() * rocketMass);
+		double[] earthForce = getForceVector(rocketState, earthState, earth.getMass() * rocketMass,false);
+		double[] moonForce = getForceVector(rocketState, moonState, moon.getMass() * rocketMass,false);
 		double[] thrustForce = PhysicUtility.scalarProd(thrust, 
 				PhysicUtility.unityVector(commandes.getAngleThrust()));
 		if(print){
@@ -199,6 +227,8 @@ public class PhysicMotor {
 			System.out.println("earthForce:"+PhysicUtility.norm2(earthForce));
 			System.out.println("moonForce:"+PhysicUtility.norm2(moonForce));
 			System.out.println("thrust:"+PhysicUtility.norm2(thrustForce));
+			System.out.println("velocity:"+rocketVelocity[1]);
+			System.out.println();
 		}
 		//If the force is too high, just cancel it, it doesn't make any sense...
 		if(PhysicUtility.norm2(moonForce)>100 || PhysicUtility.norm2(earthForce)>100)
@@ -207,7 +237,7 @@ public class PhysicMotor {
 		}
 		double[] sum = PhysicUtility.sum2(earthForce, moonForce);
 		sum=PhysicUtility.sum2(sum, thrustForce);
-		double[] update = PhysicUtility.scalarProd(1 / rocketMass, sum);
+		double[] update = PhysicUtility.scalarProd(1/(rocketMass), sum);
 		double[] rocketSpeed = PhysicUtility.sum2(rocketVelocity, update);
 		return rocketSpeed;
 
