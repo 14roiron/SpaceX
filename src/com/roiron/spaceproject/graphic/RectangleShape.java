@@ -82,8 +82,8 @@ public class RectangleShape extends GraphicShape {
 		//rotate the screen to draw a easier rectangle
 		gg.rotate(getTheta(), getPosX(), getPosY());
 		gg.setColor(getColor());
-		//gg.fillRect((int) (getPosX()-getWidth()/2.), (int) (getPosY()-getHeight()/2.),
-			//	(int) getWidth() , (int)getHeight());
+		gg.fillRect((int) (getPosX()-getWidth()/2.), (int) (getPosY()-getHeight()/2.),
+				(int) getWidth() , (int)getHeight());
 		gg.drawImage(image, (int) (getPosX()-getWidth()/2.), (int) 
 				(getPosY()-getHeight()/2.), (int) getWidth(), (int)getHeight(), null);
 	    gg.dispose();//back to the normal Position

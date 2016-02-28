@@ -10,10 +10,10 @@ public class Commandes {
 	public final static double GasTankCapacity=5;
 	private boolean isBoosterOn;
 	private double boosterTank;
-	public final static double BoosterTankCapacity=20;
+	public final static double BoosterTankCapacity=35;
 	private boolean isCrached;
-	public static double ptWration=1.4; //power to weight ratio
-	public static double consumption=0.05; //power to weight ratio
+	public static double ptWration=1.5; //power to weight ratio
+	public static double consumption=0.23; //power to weight ratio
 	
 	
 	
@@ -169,6 +169,13 @@ public class Commandes {
 		this.boosterTank = boosterTank;
 	}
 	/**
+	 * Booster tank capacity
+	 * @return pourcentage
+	 */
+	public double getBoosterTankPerecentage() {
+		return getBoosterTank()/BoosterTankCapacity*100.;
+	}
+	/**
 	 * @return the gasThrust
 	 */
 	public double getGasThrust() {
@@ -192,6 +199,7 @@ public class Commandes {
 	public void setCrached(boolean isCrached) {
 		this.isCrached = isCrached;
 	}
+
 	
 	
 

@@ -19,8 +19,8 @@ public class PhysicMotor {
 	private LineCurve rocketCurve;
 	private List<GraphicObject> listGraphic;
 	private Commandes commandes;
-	public static final int height = 900;
-	public static final int width = 1100;
+	public static final int height = 1000;
+	public static final int width = 1300;
 	/**
 	 * Default constructor of the graphic motor
 	 * @param listGraphic object containing all drawing figures
@@ -33,26 +33,25 @@ public class PhysicMotor {
 			this.listGraphic = listGraphic;
 			
 			// We fisrt define the earth, Velocity equal to 0
-			earth = new CircleShape(width / 2, height / 2, 0, Color.blue, height / 10,
-					10000);
+			earth = new CircleShape(width / 2, height / 2, 0, Color.BLUE, 40,
+					3000);
 			listGraphic.add(earth);
 	
-			moon = new CircleShape(width * 9 / 10, height / 2, 0, Color.white, height / 30,
-					400);
-			moon.setVeloY(33);
+			moon = new CircleShape(width * 8 / 10, height / 2, 0, Color.WHITE, 15,
+					200);
+			moon.setVeloY(20);
 			listGraphic.add(moon);
 	
 			moonCurve = new LineCurve();
 			listGraphic.add(moonCurve);
 			
-			rocket = new RectangleShape(width/2, height/2-height/10-25, 0, Color.gray, 40, 60, 30);
+			rocket = new RectangleShape(width/2, height/2-40-10, 0, Color.DARK_GRAY, 20, 30, 30);
 			rocket.setInContact(earth);
 			listGraphic.add(rocket);
 			
 			rocketCurve = new LineCurve();
 			listGraphic.add(rocketCurve);
 			
-			commandes.increaseThrust();
 		}
 
 	}
@@ -128,10 +127,10 @@ public class PhysicMotor {
 	 *  supposing that we keep the same orders
 	 */
 	public void simulate() {
-		ObjectState[] moonList = new ObjectState[5000];
+		ObjectState[] moonList = new ObjectState[7000];
 		ObjectState previousState, curentState;
 		moonList[0] = moon.getGlobalState();
-		for (int i = 1; i < 5000; i++) {
+		for (int i = 1; i < 7000; i++) {
 			// For every step we plot the moon state from the previous one,
 			// using the update equation
 			previousState = moonList[i - 1];
@@ -144,13 +143,13 @@ public class PhysicMotor {
 			double[] sum = PhysicUtility.sum3(update, previousState.getPosition());
 			curentState.setPosition(sum);
 		}
-		
-		ObjectState[] rocketList = new ObjectState[1000];
+		//We initialise the positon array
+		ObjectState[] rocketList = new ObjectState[5000];
 		rocketList[0] = rocket.getGlobalState();
 		rocketList[0].setMass(rocket.getMass()+commandes.simulateMass(0));
 		for (int i = 1; i < rocketList.length; i++) {
-			// For every step we plot the moon state from the previous one,
-			// using the update equation
+			// For every step we plot the rocket state from the previous one,
+			// using the update equation and the new moon position
 			previousState = rocketList[i - 1];
 			rocketList[i] = new ObjectState();
 			curentState = rocketList[i];
