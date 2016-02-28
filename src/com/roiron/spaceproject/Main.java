@@ -39,6 +39,9 @@ public class Main extends JFrame {
 	JPanel mainPanel;
 	PhysicMotor motor;
 	Run thread;
+	
+	JPanel informationsPanel;
+	JLabel informationsLabel;
 
 	public Main() throws InterruptedException {
 		this.setTitle("Space Simulation");
@@ -117,13 +120,21 @@ public class Main extends JFrame {
 		statutLabel = new JLabel("Landed");
 		statutLabel.setForeground(Color.green);
 		controlPannel.add(statutLabel);
+		
+		informationsLabel=new JLabel(commandes.getInfos());
+		informationsPanel=new JPanel();
+		informationsPanel.add(informationsLabel);
+		
 
 		mainPanel = new JPanel();
 		mainPanel.setLayout(null);
 		controlPannel.setBounds(1300 - 200, 0, 200, 300);
 		mainPanel.add(controlPannel);
+		informationsPanel.setBounds(1300 - 250, 1000-200, 250, 200);
+		mainPanel.add(informationsPanel);
 		spacePanel.setBounds(0, 0, 1300, 1000);
 		mainPanel.add(spacePanel);
+		
 
 		this.setContentPane(mainPanel);
 		this.setVisible(true);
@@ -132,19 +143,24 @@ public class Main extends JFrame {
 		thread.start();
 
 	}
-
+	/**
+	 * Stop the thread and reset the parameters
+	 */
 	public void stop() {
 		this.removeKeyListener(keyListener);
 		this.remove(mainPanel);
 		thread.interrupt();
 	}
-
+	/**
+	 * configure and draw everything
+	 */
 	public void updateGraphic() {
-		spacePanel.repaint();
-		angleControlPanel.repaint();
+		//spacePanel.repaint();
+		//angleControlPanel.repaint();
 		thrustProgressBar.setValue((int) (commandes.getGasThrust() * 20.));
 		gasProgressBar.setValue((int) (commandes.getGasTankPerecentage()));
 		boosterProgressBar.setValue((int) (commandes.getBoosterTankPerecentage()));
+		informationsLabel.setText(commandes.getInfos());
 		if (commandes.isCrached()) {
 			statutLabel.setText("crashed");
 			statutLabel.setForeground(Color.red);
@@ -172,19 +188,16 @@ public class Main extends JFrame {
 		public void run() {
 			running = true;
 			while (running) {
-
-				for (int i = 0; i < 10; i++) {
-
+				for(int i=0;i<5;i++)
 					motor.update();
-					try {
-						Thread.sleep(5);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
 				motor.simulate();
 				updateGraphic();
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				while (pause) {
 					try {
 						Thread.sleep(5);

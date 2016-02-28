@@ -1,5 +1,7 @@
 package com.roiron.spaceproject;
 
+import java.io.ObjectInputStream.GetField;
+
 public class Commandes {
 
 	// Thrust of the engine
@@ -14,6 +16,8 @@ public class Commandes {
 	private boolean isCrached;
 	public static double ptWration = 1.5; // power to weight ratio
 	public static double consumption = 0.23; // power to weight ratio
+	
+	private String RocketInfo;
 
 	public Commandes() {
 		gasTank = GasTankCapacity;
@@ -105,7 +109,9 @@ public class Commandes {
 		isBoosterOn = true;
 		this.gasThrust += 0.03;
 	}
-
+	/**
+	 * Decrease the gas thrust
+	 */
 	public void decreaseThrust() {
 		this.gasThrust -= 0.1;
 		if (gasThrust < 0)
@@ -226,5 +232,28 @@ public class Commandes {
 	public void setCrached(boolean isCrached) {
 		this.isCrached = isCrached;
 	}
-
+	/**
+	 * Return the informations from the rocket
+	 * @return
+	 */
+	public String getInfos()
+	{
+		return new String("<html>"+RocketInfo+"</html>");
+	}
+	/**
+	 * Reset the String informations
+	 * @param initialize the string
+	 */
+	public void resetInfo(String str)
+	{
+		RocketInfo=new String(str);
+	}
+	/**
+	 * add new informations to the String
+	 * @param infos
+	 */
+	public void addInfos(String infos)
+	{
+		RocketInfo=new String(RocketInfo+"<br />"+infos);
+	}
 }

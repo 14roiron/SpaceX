@@ -135,7 +135,7 @@ public class PhysicMotor {
 			curentState.setPosition(sum);
 		}
 		// We initialise the positon array
-		ObjectState[] rocketList = new ObjectState[5000];
+		ObjectState[] rocketList = new ObjectState[7000];
 		rocketList[0] = rocket.getGlobalState();
 		rocketList[0].setMass(rocket.getMass() + commandes.simulateMass(0));
 		for (int i = 1; i < rocketList.length; i++) {
@@ -150,6 +150,7 @@ public class PhysicMotor {
 			curentState.setVelocityXY(
 					updateRocketVelocity(earth.getState(), moonList[i].getPositionXY(), previousState.getPositionXY(),
 							previousState.getVelocityXY(), curentState.getMass(), commandes.simulateThrust(i), false));
+			//Scalair product to make it working
 			double[] update = PhysicUtility.scalarProd3(1. / 50., curentState.getVelocity());
 			double[] sum = PhysicUtility.sum3(update, previousState.getPosition());
 			curentState.setPosition(sum);
@@ -220,12 +221,13 @@ public class PhysicMotor {
 		double[] moonForce = getForceVector(rocketState, moonState, moon.getMass() * rocketMass, false);
 		double[] thrustForce = PhysicUtility.scalarProd(thrust, PhysicUtility.unityVector(commandes.getAngleThrust()));
 		if (print) {
-			System.out.println("mass:" + rocketMass);
-			System.out.println("earthForce:" + PhysicUtility.norm2(earthForce));
-			System.out.println("moonForce:" + PhysicUtility.norm2(moonForce));
-			System.out.println("thrust:" + PhysicUtility.norm2(thrustForce));
-			System.out.println("velocity:" + rocketVelocity[1]);
-			System.out.println();
+			commandes.resetInfo("rocket parameters");
+			commandes.addInfos("mass: " + rocketMass);
+			commandes.addInfos("earthForce: " + PhysicUtility.norm2(earthForce));
+			commandes.addInfos("moonForce: " + PhysicUtility.norm2(moonForce));
+			commandes.addInfos("thrust: " + PhysicUtility.norm2(thrustForce));
+			commandes.addInfos("velocity: " + PhysicUtility.norm2(rocketVelocity));
+			//System.out.println(commandes.getInfos());
 		}
 		// If the force is too high, just cancel it, it doesn't make any
 		// sense...
