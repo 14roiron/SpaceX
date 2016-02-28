@@ -1,0 +1,43 @@
+\documentclass{scrartcl}
+
+\usepackage[utf8]{inputenc} % Unicode support (Umlauts etc.)
+\usepackage{hyperref} % Add a link to your document
+\usepackage{graphicx} % Add pictures to your document
+\usepackage{listings} % Source code formatting and highlighting
+\usepackage[top=75px, bottom=75px, left=85px, right=85px]{geometry} % Change page borders
+\usepackage{mathtools}
+\usepackage{color}
+%footer
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+
+%Packages
+\usepackage[parfill]{parskip}
+\usepackage{tikz}
+%Configure Packages
+\usetikzlibrary{automata, arrows, positioning}
+
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\begin{document}
+
+\title{Explanations of the program}
+\date{\today{}}
+
+\author{Roiron Yohann yohann.roiron@mines-paristech.fr}
+
+\maketitle
+%\tableofcontents \pagebreak
+
+\section{Physics}
+We are going to modelise the system as a dual body, one is fix: The earth, and the second one is moving, the rocket we are sending into space.
+The aim of this programm is to simulate the launch ( A very simplified one, no body separation, to booster, and no rotations issue) and recuperation of the module. We will also Simulate the moon.
+
+$$m\frac{d\vec V}{dt}=\vec u+ \vec F_{Earth \rightarrow Sat} + \vec F _{Moon \rightarrow Sat}$$
+We can Discretise the system:
+
+$$\vec V(t+1) - \vec V(t)=\frac{1}{m}\vec u(t)+ \frac{1}{m}\vec F_{Earth \rightarrow Sat}(t) + \frac{1}{m}\vec F _{Moon \rightarrow Sat}(t)$$
+
+\end{document}
