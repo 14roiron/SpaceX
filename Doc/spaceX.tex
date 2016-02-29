@@ -35,7 +35,7 @@
 this document is made to present the java program done for the SpaceX interview.
 I was asked to do:
 
-\emph{ In order to assess your Java level, we’d like you to develop a quick app. As you’re in simulation, we’d like you to graphically simulate the launch of our Falcon 9. Don?t bother with details, we just want a working and realistic app.}
+\emph{ In order to assess your Java level, we’d like you to develop a quick app. As you’re in simulation, we’d like you to graphically simulate the launch of our Falcon 9. Don’t bother with details, we just want a working and realistic app.}
 So i decided to code a physico-realistic application which as to simulate the launch of a rocket in a 2D. earth centred space. The aim of the program is to simulate the influence of the fuel capacity in this 3 bodies environment.
 
 \section{Physics}
@@ -53,12 +53,16 @@ $$\vec V(t+1) - \vec V(t)=\frac{1}{m}\vec u(t)+ \frac{1}{m}\vec F_{Earth \righta
 
 And considering this equation with the mass of the system which is almost always decreasing, you can update the system.
 
-The white line is a prediction of the system: If you continue like that, where you are system going. It's very interesting to how this simple three body system can evolve in such a complicate way.
+But to adjust the physic of the system, I had to adjust a lot of coefficients, like the power-to-weight and the consumption of the booster, or the weight of the different body, to make the system react like a real one. I adjust them one by one, from the weight to the consumption, to be able to launch rockets, without losing it.
 
-The prediction part in the physical motor file can consume a lot of power, so you can, if needed decrease the size of the prediction array.
+The white line is a prediction of the system: If you continue like that, where you are the system going. It's very interesting to see how this simple three body system can evolve in such a complicate way.
 
-To improve this project, we should see if this discrete model is deriving from the theoretical one, and maybe increase the step. Also watch the coherence of the entire project, the gas engine is too powerfull compare to the booster and real life, but here it's easier to have a powerfull booster to test the programm.
-I also Implement a very simple collision program (5 points in a rectangle with a circle) and better algorithms could be implemented. From a physic point of view, the atmoshpere is never took in accompt, that's why it's almost impossible to land, so it can also be an idea to implement.
+
+
+The prediction part in the physical motor file can consume a lot of power, so you can, if needed you can decrease the size of the prediction array.
+
+To improve this project, we should see if this discrete model is deriving from the theoretical one, and maybe increase the step. Also watch the coherence of the entire project, the gas engine is too powerful compared to the booster and real life, but here it's easier to have a powerful booster to test the program.
+I also implement a very simple collision program (5 points in a rectangle with a circle) and better algorithms could be implemented. From a physical point of view, the atmosphere is never taken in accompt, that's why it's almost impossible to land, so it can also be an idea to implement.
 
 This project, available on github (14roiron/spacex) was made in almost 20 hours in 4 days.
 
