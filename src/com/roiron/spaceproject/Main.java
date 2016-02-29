@@ -189,7 +189,7 @@ public class Main extends JFrame {
 	public void updateGraphic() {
 		// spacePanel.repaint();
 		// angleControlPanel.repaint();
-		thrustProgressBar.setValue((int) (commandes.getGasThrust() * 20.));
+		thrustProgressBar.setValue((int) (commandes.getGasThrust() * 100.));
 		gasProgressBar.setValue((int) (commandes.getGasTankPerecentage()));
 		boosterProgressBar.setValue((int) (commandes.getBoosterTankPerecentage()));
 		informationsLabel.setText(commandes.getInfos());

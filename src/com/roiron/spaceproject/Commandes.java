@@ -55,7 +55,7 @@ public class Commandes {
 			if (isBoosterOn & boosterTankCopy > 0)
 				boosterTankCopy -= consumption;
 			if (getGasTank() > 0)
-				gasTankCopy -= gasThrust / 500.;
+				gasTankCopy -= gasThrust / 200.;
 		}//We simulate the capacity of tanks in i periods
 		if (gasTankCopy > 0)
 			thrustTotal += gasThrust;
@@ -86,7 +86,7 @@ public class Commandes {
 			if (isBoosterOn & boosterTankCopy > 0)
 				boosterTankCopy -= consumption;
 			if (getGasTank() > 0)
-				gasTankCopy -= gasThrust / 500.;
+				gasTankCopy -= gasThrust / 200.;
 		}
 		return gasTankCopy + boosterTankCopy;
 	}
@@ -102,7 +102,7 @@ public class Commandes {
 			setBoosterOn(false);
 		// is the gas tank empty?
 		if (getGasTank() > 0) {
-			gasTank -= gasThrust / 500.;
+			gasTank -= gasThrust / 200.;
 
 		} else {
 			setGasThrust(0);
@@ -114,13 +114,13 @@ public class Commandes {
 
 	public void increaseThrust() {
 		isBoosterOn = true;
-		this.gasThrust += 0.03;
+		this.gasThrust += 0.01;
 	}
 	/**
 	 * Decrease the gas thrust
 	 */
 	public void decreaseThrust() {
-		this.gasThrust -= 0.1;
+		this.gasThrust -= 0.03;
 		if (gasThrust < 0)
 			gasThrust = 0;
 	}
